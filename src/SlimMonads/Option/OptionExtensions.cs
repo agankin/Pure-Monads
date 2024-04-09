@@ -3,23 +3,6 @@
 public static class OptionExtensions
 {
     /// <summary>
-    /// Wraps the value into Some option.
-    /// </summary>
-    /// <typeparam name="TValue">Value type.</typeparam>
-    /// <param name="value">A value.</param>
-    /// <returns>The original value wrapped into Some option.</returns>
-    public static Option<TValue> Some<TValue>(this TValue value) => value;
-
-    /// <summary>
-    /// If the value is not null then wraps it into Some option otherwise returns None.
-    /// </summary>
-    /// <typeparam name="TValue">Value type.</typeparam>
-    /// <param name="value">A value.</param>
-    /// <returns>The original value wrapped into Some option or None.</returns>
-    public static Option<TValue> NullToNone<TValue>(this TValue? value) =>
-        value?.Some() ?? Option<TValue>.None();
-
-    /// <summary>
     /// Returns the original option if it is Some or <paramref name="alternativeValue"/> wrapped into Some option.
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>

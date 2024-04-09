@@ -10,6 +10,9 @@ public readonly struct Option<TValue> : IOption<TValue>
 
     private Option(bool hasValue, TValue? value) => (HasValue, _value) = (hasValue, value);
 
+    /// <summary>
+    /// Returns true when the option is Some.
+    /// </summary>
     public bool HasValue { get; }
 
     /// <summary>
