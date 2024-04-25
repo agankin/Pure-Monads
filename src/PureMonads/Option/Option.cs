@@ -1,4 +1,4 @@
-﻿namespace SlimMonads;
+﻿namespace PureMonads;
 
 /// <summary>
 /// An option that can be either Some containing a value or None without value.

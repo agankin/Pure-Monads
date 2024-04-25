@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SlimMonads.Tests.Utils
+namespace PureMonads.Tests.Utils
 {
     internal class MethodCallAssert<TArg, TResult>
     {

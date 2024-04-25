@@ -1,1 +1,1 @@
-# Slim Monads
+# Pure Monads

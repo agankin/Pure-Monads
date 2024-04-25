@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace SlimMonads.Tests;
+namespace PureMonads.Tests;
 
 public static class OptionAssertions
 {

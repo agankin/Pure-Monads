@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using SlimMonads.Tests.Utils;
+using PureMonads.Tests.Utils;
 
-namespace SlimMonads.Tests;
+namespace PureMonads.Tests;
 
 [TestFixture]
 public class OptionTests

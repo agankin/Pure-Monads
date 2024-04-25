@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace SlimMonads;
+namespace PureMonads;
 
 internal static class NullGuards
 {

@@ -1,4 +1,4 @@
-namespace SlimMonads;
+namespace PureMonads;
 
 /// <summary>
 /// Represents a result that can either be a value or an exception.

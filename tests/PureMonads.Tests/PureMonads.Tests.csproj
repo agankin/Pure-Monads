@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SlimMonads\SlimMonads.csproj" />
+    <ProjectReference Include="..\..\src\PureMonads\PureMonads.csproj" />
   </ItemGroup>
 	
 </Project>

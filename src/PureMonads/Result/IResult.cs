@@ -1,4 +1,4 @@
-namespace SlimMonads;
+namespace PureMonads;
 
 /// <summary>
 /// Can be matched as a value or an error.

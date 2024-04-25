@@ -1,4 +1,4 @@
-namespace SlimMonads;
+namespace PureMonads;
 
 /// <summary>
 /// Contains methods for creating instances of Result.

@@ -1,4 +1,4 @@
-﻿namespace SlimMonads;
+﻿namespace PureMonads;
 
 public static class OptionExtensions
 {

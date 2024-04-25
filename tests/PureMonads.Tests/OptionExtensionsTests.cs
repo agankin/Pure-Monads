@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SlimMonads.Tests;
+namespace PureMonads.Tests;
 
 [TestFixture]
 public class OptionExtensionsTests
