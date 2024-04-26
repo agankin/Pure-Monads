@@ -3,14 +3,44 @@ namespace PureMonads;
 /// <summary>
 /// Contains methods for creating instances of Result.
 /// </summary>
-public static class Result
+public class Result
 {
+    private Result() {}
+
     /// <summary>
-    /// Executes a delegate and returns wrapped into Result a value or an occured exception.
+    /// Creates an instance of value result.
+    /// </summary>
+    /// <param name="value">A value.</param>
+    /// <returns>A instance of value result.</returns>
+    public static Result<TValue, TError> Value<TValue, TError>(TValue value) => new(value);
+
+    /// <summary>
+    /// Creates an instance of error result.
+    /// </summary>
+    /// <param name="error">An error.</param>
+    /// <returns>An instance of error result.</returns>
+    public static Result<TValue, TError> Error<TValue, TError>(TError error) => new(error);
+
+    /// <summary>
+    /// Creates an instance of value result.
+    /// </summary>
+    /// <param name="value">A value.</param>
+    /// <returns>An instance of value result.</returns>
+    public static Result<TValue> Value<TValue>(TValue value) => new(value);
+
+    /// <summary>
+    /// Creates an instance of exception result.
+    /// </summary>
+    /// <param name="error">An exception.</param>
+    /// <returns>An instance of exception result.</returns>
+    public static Result<TValue> Error<TValue>(Exception error) => new(error);
+    
+    /// <summary>
+    /// Executes a delegate and returns a resulting value or an occured exception wrapped into Result.
     /// </summary>
     /// <typeparam name="TResult">Result type.</typeparam>
     /// <param name="func">A delegate.</param>
-    /// <returns>Value or Error result.</returns>
+    /// <returns>An instance of a value or an error result.</returns>
     public static Result<TResult> From<TResult>(Func<TResult> func)
     {
         try
@@ -24,11 +54,11 @@ public static class Result
     }
 
     /// <summary>
-    /// Executes an async delegate and returns a task representing wrapped into Result a value or an occured exception.
+    /// Executes an async delegate and returns a task representing a resulting value or an occured exception wrapped into Result.
     /// </summary>
     /// <typeparam name="TResult">Result type.</typeparam>
     /// <param name="func">A delegate.</param>
-    /// <returns>Value or Error result.</returns>
+    /// <returns>An instance of a value or an error result.</returns>
     public static async Task<Result<TResult>> FromAsync<TResult>(Func<Task<TResult>> asyncFunc)
     {
         try
