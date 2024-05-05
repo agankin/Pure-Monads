@@ -11,7 +11,6 @@ public interface IComonad<T, TComonad>
     /// Creates a new comonad.
     /// </summary>
     /// <typeparam name="TNew">New comonad value type.</typeparam>
-    /// <typeparam name="TComonad">Comonad actual type.</typeparam>
     /// <param name="value">A value to be wrapped into a comonad.</param>
     /// <returns>A new comonad instance.</returns>
     IComonad<TNew, TComonad> Unit<TNew>(TNew value);
