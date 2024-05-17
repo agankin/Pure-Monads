@@ -10,7 +10,7 @@ public static class Option
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>
     /// <param name="value">A value.</param>
-    /// <returns>The original value wrapped into Some option.</returns>
+    /// <returns>The value wrapped into Some option.</returns>
     public static Option<TValue> Some<TValue>(this TValue value) => value;
 
     /// <summary>
@@ -21,11 +21,10 @@ public static class Option
     public static Option<TValue> None<TValue>() => Option<TValue>.None();
 
     /// <summary>
-    /// If the value is not null then wraps it into Some option otherwise returns None.
+    /// If the value is null returns None option. Otherwise returns it wrapped into Some option.
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>
     /// <param name="value">A value.</param>
-    /// <returns>The original value wrapped into Some option or None.</returns>
-    public static Option<TValue> NullAsNone<TValue>(this TValue? value) =>
-        value?.Some() ?? Option<TValue>.None();
+    /// <returns>An instance of option.</returns>
+    public static Option<TValue> NullAsNone<TValue>(this TValue? value) => value != null ? Some(value) : None<TValue>();
 }

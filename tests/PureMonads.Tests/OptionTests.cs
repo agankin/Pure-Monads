@@ -1,84 +1,86 @@
 ﻿using NUnit.Framework;
-using PureMonads.Tests.Utils;
 
 namespace PureMonads.Tests;
 
-[TestFixture]
+using static Option;
+
+[TestFixture(TestName = "Option Tests")]
 public class OptionTests
 {
-    [Test(Description = "Tests Match Some.")]
-    public void TestsMatchSome()
+    [Test(Description = "Tests Match")]
+    public void TestsMatch()
     {
-        var mapSomeCallAssert = new MethodCallAssert<int, int>(value => value + 1);
-        var onNoneCallAssert = new MethodCallAssert<int, int>(value => value);
-        
-        var result = 1.Some().Match(
-            mapSome: mapSomeCallAssert.Method,
-            onNone: () => onNoneCallAssert.Method(0));
-
-        result.ItIs(2);
-        mapSomeCallAssert.CalledTimes(1).NthCall(nth: 0, expectedArg: 1);
-        onNoneCallAssert.CalledTimes(0);
+        "value".Some()
+            .Match(value => value + " 2", () => "none").ItIs("value 2");
+        None<string>()
+            .Match(value => value + " 2", () => "none").ItIs("none");
     }
 
-    [Test(Description = "Tests Match None.")]
-    public void TestsMatchNone()
+    [Test(Description = "Tests Map")]
+    public void TestsMap()
     {
-        var mapSomeCallAssert = new MethodCallAssert<int, int>(value => value + 1);
-        var onNoneCallAssert = new MethodCallAssert<int, int>(value => value);
-        
-        var result = Option<int>.None().Match(
-            mapSome: mapSomeCallAssert.Method,
-            onNone: () => onNoneCallAssert.Method(0));
-
-        result.ItIs(0);
-        mapSomeCallAssert.CalledTimes(0);
-        onNoneCallAssert.CalledTimes(1);
+        "value".Some()
+            .Map(value => value + " 2").IsSome("value 2");
+        None<string>()
+            .Map(value => value + " 2").IsNone();
     }
 
-    [Test(Description = "Tests Map Some.")]
-    public void TestsMapSome()
+    [Test(Description = "Tests FlatMap")]
+    public void TestsFlatMap()
     {
-        var callAssert = new MethodCallAssert<int, int>(value => value + 1);
-        var someMappedValue = 1.Some().Map(callAssert.Method);
+        "value".Some()
+            .FlatMap<string, string>(value => value + " 2").IsSome("value 2");
+        "value".Some()
+            .FlatMap(value => None<string>()).IsNone();
 
-        someMappedValue.IsSome();
-        callAssert.CalledTimes(1).NthCall(nth: 0, expectedArg: 1);
+        None<string>()
+            .FlatMap<string, string>(value => value + " 2").IsNone();
+        None<string>()
+            .FlatMap(value => None<string>()).IsNone();
     }
 
-    [Test(Description = "Tests Map None.")]
-    public void TestsMapNone()
+    [Test(Description = "Tests Or")]
+    public void TestsOr()
     {
-        var callAssert = new MethodCallAssert<int, int>(value => value + 1);
-        var noneMapped = Option<int>.None().Map(callAssert.Method);
+        // Some value or an alternative value.
+        "value".Some()
+            .Or("other").ItIs("value");
+        None<string>()
+            .Or("other").ItIs("other");
 
-        noneMapped.IsNone();
-        callAssert.CalledTimes(0);
+        // Some value or an alternative value from a factory function.
+        "value".Some()
+            .Or(() => "other").ItIs("value");
+        None<string>()
+            .Or(() => "other").ItIs("other");
+
+        // Some value or an alternative option.
+        "value".Some()
+            .Or("other".Some()).IsSome("value");
+        "value".Some()
+            .Or(None<string>()).IsSome("value");
+        None<string>()
+            .Or("other".Some()).IsSome("other");
+        None<string>()
+            .Or(None<string>()).IsNone();
+
+        // Some value or an alternative option from a factory function.
+        "value".Some()
+            .Or(() => "other".Some()).IsSome("value");
+        "value".Some()
+            .Or(() => None<string>()).IsSome("value");
+        None<string>()
+            .Or(() => "other".Some()).IsSome("other");
+        None<string>()
+            .Or(() => None<string>()).IsNone();
     }
 
-    [Test(Description = "Tests FlatMap Some")]
-    public void TestsFlatMapSome()
+    [Test(Description = "Tests NullAsNone")]
+    public void TestsNullAsNone()
     {
-        var call1Assert = new MethodCallAssert<int, Option<int>>(value => (value + 1).Some());
-        var someValue = 1.Some().FlatMap(call1Assert.Method);
+        string? @null = null;
 
-        someValue.IsSome();
-        call1Assert.CalledTimes(1).NthCall(nth: 0, expectedArg: 1);
-
-        var call2Assert = new MethodCallAssert<int, Option<int>>(value => Option<int>.None());
-        var noneValue = 1.Some().FlatMap(call2Assert.Method);
-
-        noneValue.IsNone();
-        call2Assert.CalledTimes(1).NthCall(0, expectedArg: 1);
-    }
-
-    [Test(Description = "Tests FlatMap None")]
-    public void TestsFlatMapNone()
-    {
-        var callAssert = new MethodCallAssert<int, Option<int>>(value => (value + 1).Some());
-        var noneValue = Option<int>.None().FlatMap(callAssert.Method);
-
-        noneValue.IsNone();
-        callAssert.CalledTimes(0);
+        "value".NullAsNone().IsSome("value");
+        @null.NullAsNone().IsNone();
     }
 }

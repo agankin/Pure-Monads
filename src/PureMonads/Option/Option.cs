@@ -1,14 +1,14 @@
 ﻿namespace PureMonads;
 
 /// <summary>
-/// An option that can be either Some containing a value or None without value.
+/// Can either be Some value or None with no value.
 /// </summary>
 /// <typeparam name="TValue">Value type.</typeparam>
-public readonly struct Option<TValue> : IOption<TValue>
+public readonly struct Option<TValue>
 {
-    private readonly TValue? _value;
+    private readonly TValue _value = default!;
 
-    private Option(bool hasValue, TValue? value) => (HasValue, _value) = (hasValue, value);
+    private Option(bool hasValue, TValue value) => (HasValue, _value) = (hasValue, value);
 
     /// <summary>
     /// Returns true when the option is Some.
@@ -26,31 +26,17 @@ public readonly struct Option<TValue> : IOption<TValue>
     /// Creates an instance of None option.
     /// </summary>
     /// <returns>An instance of None option.</returns>
-    public static Option<TValue> None() => new(hasValue: false, default);
+    public static Option<TValue> None() => new(hasValue: false, default!);
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Matches the option as Some with a value or None without value by invoking the corresponding delegate.
+    /// </summary>
+    /// <typeparam name="TResult">Result type.</typeparam>
+    /// <param name="mapSome">A delegate to be invoked with the value of Some.</param>
+    /// <param name="onNone">A delegate to be invoked on None.</param>
+    /// <returns>A result returned from the matched delegate invocation.</returns>
     public TResult Match<TResult>(Func<TValue, TResult> mapSome, Func<TResult> onNone) =>
-        HasValue ? mapSome(_value.NotNull()) : onNone();
-
-    /// <summary>
-    /// If the current option is Some returns the result from <paramref name="mapSome"/> invocation wrapped into Some option.
-    /// Otherwise returns None.
-    /// </summary>
-    /// <typeparam name="TResult">Result value type.</typeparam>
-    /// <param name="mapSome">A delegate invoked if the current option is Some.</param>
-    /// <returns>Some result value or None.</returns>
-    public Option<TResult> Map<TResult>(Func<TValue, TResult> mapSome) =>
-        Match(value => mapSome(value.NotNull()).Some(), Option<TResult>.None);
-
-    /// <summary>
-    /// If the current option is Some returns the result option from <paramref name="mapSome"/> invocation.
-    /// Otherwise returns None.
-    /// </summary>
-    /// <typeparam name="TResult">Result value type.</typeparam>
-    /// <param name="mapSome">A delegate invoked if the current option is Some.</param>
-    /// <returns>Some result value or None.</returns>
-    public Option<TResult> FlatMap<TResult>(Func<TValue, Option<TResult>> mapSome) =>
-         Match(value => mapSome(value.NotNull()), Option<TResult>.None);
+        HasValue ? mapSome(_value) : onNone();
 
     public static implicit operator Option<TValue>(TValue value) => Option<TValue>.Some(value);
 }
