@@ -3,30 +3,30 @@ namespace PureMonads;
 public static class ResultExtensions
 {
     /// <summary>
-    /// Returns a value from result wrapped into Some option or returns None option.
+    /// If the current result is a value returns it wrapped into Some option, otherwise returns None option.
     /// </summary>
-    /// <returns>An instance of Option.</returns>
+    /// <returns>Some value or None.</returns>
     public static Option<TValue> Value<TValue, TError>(this Result<TValue, TError> result) =>
-        result.Extract(Option.Some, _ => Option.None<TValue>());
+        result.Match(Option.Some, _ => Option.None<TValue>());
 
     /// <summary>
-    /// Returns a value from result wrapped into Some option or returns None option.
+    /// If the current result is a value returns it wrapped into Some option, otherwise returns None option.
     /// </summary>
-    /// <returns>An instance of Option.</returns>
+    /// <returns>Some value or None.</returns>
     public static Option<TValue> Value<TValue>(this Result<TValue> result) =>
-        result.Extract(Option.Some, _ => Option.None<TValue>());
+        result.Match(Option.Some, _ => Option.None<TValue>());
 
     /// <summary>
-    /// Returns a error from result wrapped into Some option or returns None option.
+    /// If the current result is an error returns it wrapped into Some option, otherwise returns None option.
     /// </summary>
-    /// <returns>An instance of Option.</returns>
+    /// <returns>Some error or None.</returns>
     public static Option<TError> Error<TValue, TError>(this Result<TValue, TError> result) =>
-        result.Extract(_ => Option.None<TError>(), Option.Some);
+        result.Match(_ => Option.None<TError>(), _ => Option.None<TError>());
 
     /// <summary>
-    /// Returns a error from result wrapped into Some option or returns None option.
+    /// If the current result is an exception returns it wrapped into Some option, otherwise returns None option.
     /// </summary>
-    /// <returns>An instance of Option.</returns>
+    /// <returns>Some exception or None.</returns>
     public static Option<Exception> Error<TValue>(this Result<TValue> result) =>
-        result.Extract(_ => Option.None<Exception>(), Option.Some);
+        result.Match(_ => Option.None<Exception>(), _ => Option.None<Exception>());
 }
