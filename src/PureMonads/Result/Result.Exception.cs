@@ -55,4 +55,9 @@ public readonly struct Result<TValue>
     public static implicit operator Result<TValue>(TValue value) => Result<TValue>.Value(value);
 
     public static implicit operator Result<TValue>(Exception error) => Result<TValue>.Error(error);
+
+    /// <inheritdoc/>
+    public override string ToString() => Match(
+        value => $"Value({value})",
+        ex => $"{ex.GetType().Name}({ex.Message})");
 }

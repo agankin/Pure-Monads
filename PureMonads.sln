@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PureMonads", "src\PureMonads\PureMonads.csproj", "{746C1CBF-F277-4DA9-B08E-DCBEA71A7902}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureMonads.Tests", "tests\PureMonads.Tests\PureMonads.Tests.csproj", "{784A59B9-FC53-4A6D-8073-C10EE118CAF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PureMonads.Tests", "tests\PureMonads.Tests\PureMonads.Tests.csproj", "{784A59B9-FC53-4A6D-8073-C10EE118CAF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureMonads.Samples", "samples\PureMonads.Samples\PureMonads.Samples.csproj", "{3812A6B6-5DA3-4CEB-8F48-1D44ED3A3BE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{784A59B9-FC53-4A6D-8073-C10EE118CAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{784A59B9-FC53-4A6D-8073-C10EE118CAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{784A59B9-FC53-4A6D-8073-C10EE118CAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3812A6B6-5DA3-4CEB-8F48-1D44ED3A3BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3812A6B6-5DA3-4CEB-8F48-1D44ED3A3BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3812A6B6-5DA3-4CEB-8F48-1D44ED3A3BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3812A6B6-5DA3-4CEB-8F48-1D44ED3A3BE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

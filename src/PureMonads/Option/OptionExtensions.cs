@@ -76,6 +76,6 @@ public static class OptionExtensions
     /// <param name="option">An option.</param>
     /// <returns>A value.</returns>
     /// <exception cref="Exception"></exception>
-    public static TValue ValueOrFailure<TValue>(this in Option<TValue> option) =>
-        option.Or(() => throw new Exception("Option is None."));
+    public static TValue ValueOrFailure<TValue>(this in Option<TValue> option, string? message = null) =>
+        option.Or(() => throw new Exception(message ?? "Option is None."));
 }

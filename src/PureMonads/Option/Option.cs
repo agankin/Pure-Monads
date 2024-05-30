@@ -39,4 +39,7 @@ public readonly struct Option<TValue>
         HasValue ? mapSome(_value) : onNone();
 
     public static implicit operator Option<TValue>(TValue value) => Option<TValue>.Some(value);
+
+    /// <inheritdoc/>
+    public override string ToString() => Match(value => $"Some({value})", () => "None");
 }
