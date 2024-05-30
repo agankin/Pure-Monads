@@ -40,5 +40,15 @@ public static class OptionSamples
             none1.ValueOrFailure();     // Throws exception as none1 is None.
         }
         catch {}
+
+        // Returning a Some value or None from dictionary:
+        var dict = new Dictionary<int, string>
+        {
+            { 1, "One" },
+            { 2, "Two" },
+        };
+
+        var dictValue1 = dict.GetOrNone(1);   // dictValue1 is Some("One")
+        var dictValue3 = dict.GetOrNone(3);   // dictValue1 is None
     }
 }
