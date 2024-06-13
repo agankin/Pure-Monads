@@ -13,7 +13,6 @@ Also contains **Pipe extensions** for chaining function calls.
 - [Result](#result)
 - [Pipe](#pipe)
 
-<a name="option"></a>
 ### Option
 
 ```cs
@@ -65,7 +64,6 @@ var dictValue1 = dict.GetOrNone(1);   // dictValue1 is Some("One")
 var dictValue3 = dict.GetOrNone(3);   // dictValue3 is None
 ```
 
-<a name="result"></a>
 ### Result
 
 The following code samples are for **Result&lt;TValue, TError&gt;** class.
@@ -123,7 +121,6 @@ var result4 = await Result.FromAsync(async () =>    // result4 is Error(Exceptio
 });
 ```
 
-<a name="pipe"></a>
 ### Pipe
 
 ```cs
