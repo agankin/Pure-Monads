@@ -5,7 +5,7 @@ namespace PureMonads;
 /// </summary>
 /// <typeparam name="TValue">Value type.</typeparam>
 /// <typeparam name="TError">Error type.</typeparam>
-public readonly struct Result<TValue, TError>
+public readonly struct Result<TValue, TError> : IEquatable<Result<TValue, TError>>
 {
     private readonly TValue _value;
     private readonly TError _error;
@@ -53,10 +53,30 @@ public readonly struct Result<TValue, TError>
     public TResult Match<TResult>(Func<TValue, TResult> mapValue, Func<TError, TResult> mapError) =>
         HasValue ? mapValue(_value) : mapError(_error);
 
+    /// <inheritdoc/>
+    public override string ToString() => Match(value => $"Value({value})", error => $"Error({error})");
+
+    /// <inheritdoc/>
+    public override bool Equals(object obj) => obj is Result<TValue, TError> other && Equals(other);
+
+    /// <inheritdoc/>
+    public override int GetHashCode() => HasValue
+        ? _value?.GetHashCode() ?? 0
+        : _error?.GetHashCode() ?? 0;
+
+    /// <inheritdoc/>
+    public bool Equals(Result<TValue, TError> other)
+    {
+        return HasValue == other.HasValue
+            && (HasValue && EqualityComparer<TValue>.Default.Equals(_value, other._value)
+                || !HasValue && EqualityComparer<TError>.Default.Equals(_error, other._error));
+    }
+
+    public static bool operator ==(Result<TValue, TError> first, Result<TValue, TError> second) => first.Equals(second);
+
+    public static bool operator !=(Result<TValue, TError> first, Result<TValue, TError> second) => !first.Equals(second);
+    
     public static implicit operator Result<TValue, TError>(TValue value) => Result<TValue, TError>.Value(value);
 
     public static implicit operator Result<TValue, TError>(TError error) => Result<TValue, TError>.Error(error);
-
-    /// <inheritdoc/>
-    public override string ToString() => Match(value => $"Value({value})", error => $"Error({error})");
 }

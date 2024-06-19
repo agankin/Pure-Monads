@@ -4,7 +4,7 @@
 /// Can either be Some value or None with no value.
 /// </summary>
 /// <typeparam name="TValue">Value type.</typeparam>
-public readonly struct Option<TValue>
+public readonly struct Option<TValue> : IEquatable<Option<TValue>>
 {
     private readonly TValue _value = default!;
 
@@ -38,8 +38,25 @@ public readonly struct Option<TValue>
     public TResult Match<TResult>(Func<TValue, TResult> mapSome, Func<TResult> onNone) =>
         HasValue ? mapSome(_value) : onNone();
 
-    public static implicit operator Option<TValue>(TValue value) => Option<TValue>.Some(value);
-
     /// <inheritdoc/>
     public override string ToString() => Match(value => $"Some({value})", () => "None");
+
+    /// <inheritdoc/>
+    public override bool Equals(object obj) => obj is Option<TValue> other && Equals(other);
+
+    /// <inheritdoc/>
+    public override int GetHashCode() => HasValue ? _value?.GetHashCode() ?? 0 : 0;
+
+    /// <inheritdoc/>
+    public bool Equals(Option<TValue> other)
+    {
+        return HasValue == other.HasValue
+            && (!HasValue || EqualityComparer<TValue>.Default.Equals(_value, other._value));
+    }
+
+    public static bool operator ==(Option<TValue> first, Option<TValue> second) => first.Equals(second);
+
+    public static bool operator !=(Option<TValue> first, Option<TValue> second) => !first.Equals(second);
+
+    public static implicit operator Option<TValue>(TValue value) => Option<TValue>.Some(value);
 }
