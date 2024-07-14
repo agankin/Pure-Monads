@@ -1,6 +1,6 @@
 # Pure Monads
 
-![NuGet Version](https://img.shields.io/nuget/v/Pure-Monads)
+![NuGet Version](https://img.shields.io/nuget/v/PureMonads)
 
 Contains implementations of the most commonly used monads:
 
