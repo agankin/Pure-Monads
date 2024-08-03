@@ -13,7 +13,7 @@ Also contains **Pipe extensions** for chaining function calls.
 
 - [Option](#option)
 - [Result](#result)
-- [Pipe](#pipe)
+- [Pipe extensions](#pipe-extensions)
 
 ### Option
 
@@ -109,7 +109,7 @@ var result2 = Result.From(() =>               // result2 is Error(Exception)
 });
 
 // Async versions of Result as try-catch also exist:
-var result3 = await Result.FromAsync(async () =>    // result3 is Value("Value 1)"
+var result3 = await Result.FromAsync(async () =>    // result3 is Value("Value 1")
 {
     await Task.CompletedTask;
     return "Value 1";
@@ -123,7 +123,7 @@ var result4 = await Result.FromAsync(async () =>    // result4 is Error(Exceptio
 });
 ```
 
-### Pipe
+### Pipe extensions
 
 ```cs
 // Used functions
