@@ -1,7 +1,7 @@
 ﻿namespace PureMonads;
 
 /// <summary>
-/// Can either be Some value or None with no value.
+/// Represents either a value or no value.
 /// </summary>
 /// <typeparam name="TValue">Value type.</typeparam>
 public readonly struct Option<TValue> : IEquatable<Option<TValue>>
@@ -11,29 +11,29 @@ public readonly struct Option<TValue> : IEquatable<Option<TValue>>
     private Option(bool hasValue, TValue value) => (HasValue, _value) = (hasValue, value);
 
     /// <summary>
-    /// Returns true when the option is Some.
+    /// Contains true for Some option or false for None option.
     /// </summary>
     public bool HasValue { get; }
 
     /// <summary>
-    /// Creates an instance of Some option.
+    /// Wraps a value in Some option.
     /// </summary>
-    /// <param name="value">A value of the Some option.</param>
-    /// <returns>An instance of Some option.</returns>
+    /// <param name="value">A value.</param>
+    /// <returns>An instance of Option monad.</returns>
     public static Option<TValue> Some(TValue value) => new(hasValue: true, value);
 
     /// <summary>
     /// Creates an instance of None option.
     /// </summary>
-    /// <returns>An instance of None option.</returns>
+    /// <returns>An instance of Option monad.</returns>
     public static Option<TValue> None() => new(hasValue: false, default!);
 
     /// <summary>
-    /// Matches the option as Some with a value or None without value by invoking the corresponding delegate.
+    /// Matches Some or None by invoking the corresponding delegate.
     /// </summary>
     /// <typeparam name="TResult">Result type.</typeparam>
-    /// <param name="mapSome">A delegate to be invoked with the value of Some.</param>
-    /// <param name="onNone">A delegate to be invoked on None.</param>
+    /// <param name="mapSome">A delegate invoked on Some.</param>
+    /// <param name="onNone">A delegate invoked on None.</param>
     /// <returns>A result returned from the matched delegate invocation.</returns>
     public TResult Match<TResult>(Func<TValue, TResult> mapSome, Func<TResult> onNone) =>
         HasValue ? mapSome(_value) : onNone();

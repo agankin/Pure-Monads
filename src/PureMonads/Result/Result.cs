@@ -1,7 +1,7 @@
 namespace PureMonads;
 
 /// <summary>
-/// Can either be a value or an error.
+/// Represents either a value or an error.
 /// </summary>
 /// <typeparam name="TValue">Value type.</typeparam>
 /// <typeparam name="TError">Error type.</typeparam>
@@ -25,31 +25,31 @@ public readonly struct Result<TValue, TError> : IEquatable<Result<TValue, TError
     }
 
     /// <summary>
-    /// Returns true when it is a value.
+    /// Contains true for Value result or false for Error result.
     /// </summary>
     public bool HasValue { get; }
 
     /// <summary>
-    /// Creates an instance of value result.
+    /// Wraps a value in Value result.
     /// </summary>
     /// <param name="value">A value.</param>
-    /// <returns>An instance of value Result.</returns>
+    /// <returns>An instance of Result monad.</returns>
     public static Result<TValue, TError> Value(TValue value) => new(value);
 
     /// <summary>
-    /// Creates an instance of error result.
+    /// Wraps an error in Error result.
     /// </summary>
     /// <param name="error">An error.</param>
-    /// <returns>An instance of error Result.</returns>
+    /// <returns>An instance of Result monad.</returns>
     public static Result<TValue, TError> Error(TError error) => new(error);
 
     /// <summary>
-    /// Matches as a value or an error by invoking the corresponding delegate.
+    /// Matches Value or Error by invoking the corresponding delegate.
     /// </summary>
     /// <typeparam name="TResult">Result type.</typeparam>
-    /// <param name="mapValue">A delegate invoked for a value.</param>
-    /// <param name="mapError">A delegate invoked for an error.</param>
-    /// <returns>A result returned from the matched delegate.</returns>
+    /// <param name="mapValue">A delegate invoked on Value.</param>
+    /// <param name="mapError">A delegate invoked on Error.</param>
+    /// <returns>A result returned from the matched delegate invocation.</returns>
     public TResult Match<TResult>(Func<TValue, TResult> mapValue, Func<TError, TResult> mapError) =>
         HasValue ? mapValue(_value) : mapError(_error);
 
