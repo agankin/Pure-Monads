@@ -32,8 +32,17 @@ var none2 = None<int>();                // via factory method in non-generic sta
 var mapResult = some1.Map(value => value + 10);                     // == Some(11)
 var flatMapResult = some2.FlatMap(value => (value + 10).Some());    // == Some(12)
 
-// Matching can be done:
+// Matching by invoking corresponding function:
 var matchResult = none1.Match(value => $"Some {value}!", () => "None!");   // == "None!"
+
+// Matching by invoking corresponding action: 
+void PrintSome<TValue>(TValue value) => Console.WriteLine($"Some: {value}!");
+void PrintNone() => Console.WriteLine($"None!");
+
+some1.On(PrintSome, PrintNone);         // Prints "Some: 1!"
+some1.OnSome(PrintSome);                // Prints "Some: 1!"
+some1.OnNone(PrintNone);                // Prints nothing
+none1.OnNone(PrintNone);                // Prints "None!"
 
 // Converting a nullable value into an Option instance:
 var notNull = "I'm not null!";
@@ -86,10 +95,19 @@ Result<int, string> error3 = "Error 3";              // by implicit conversion
 var mapResult = value1.Map(value => value + 10);                              // == Value(11)
 var flatMapResult = value2.FlatMap(value => Value<int, string>(value + 10));  // == Value(12)
 
-// Matching can be done:
+// Matching by invoking corresponding function:
 var matchResult = error1.Match(     // == "Error: Error 1"
     value => $"Value: {value}",
     err => $"Error: {err}");
+
+// Matching by invoking corresponding action: 
+void PrintValue<TValue>(TValue value) => Console.WriteLine($"Value: {value}");
+void PrintError<TError>(TError err) => Console.WriteLine($"Error: {err}");
+
+value1.On(PrintValue, PrintError);       // Prints "Value: 1"
+value1.OnValue(PrintValue);              // Prints "Value: 1"
+value1.OnError(PrintError);              // Prints nothing
+error1.OnError(PrintError);              // Prints "Error: Error 1"
 
 // Extracting a value or an error as Option<TValue> or Option<TError>:
 var someValue1 = value1.Value();     // == Some(1)

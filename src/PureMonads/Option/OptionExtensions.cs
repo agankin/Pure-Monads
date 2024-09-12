@@ -80,4 +80,29 @@ public static class OptionExtensions
     /// <exception cref="Exception">The exception thrown if the option is None.</exception>
     public static TValue ValueOrFailure<TValue>(this in Option<TValue> option, string? message = null) =>
         option.Or(() => throw new Exception(message ?? "Option is None."));
+
+    /// <summary>
+    /// Matches Some or None by invoking the corresponding delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="onSome">A delegate invoked on Some.</param>
+    /// <param name="onNone">A delegate invoked on None.</param>
+    public static void On<TValue>(this in Option<TValue> option, Action<TValue> onSome, Action onNone) =>
+        option.Match(onSome.AsFunc(), onNone.AsFunc());
+
+    /// <summary>
+    /// If the option is Some invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="onSome">A delegate.</param>
+    public static void OnSome<TValue>(this in Option<TValue> option, Action<TValue> onSome) =>
+        option.Match(onSome.AsFunc(), () => new());
+
+    /// <summary>
+    /// If the option is None invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="onNone">A delegate.</param>
+    public static void OnNone<TValue>(this in Option<TValue> option, Action onNone) =>
+        option.Match(_ => new(), onNone.AsFunc());
 }

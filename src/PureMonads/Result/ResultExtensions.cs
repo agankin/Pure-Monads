@@ -88,4 +88,63 @@ public static class ResultExtensions
     /// <returns>An instance of Result monad.</returns>
     public static Result<TResult> FlatMap<TValue, TResult>(this Result<TValue> result, Func<TValue, Result<TResult>> map) =>
         result.Match(value => map(value), Result<TResult>.Error);
+
+    /// <summary>
+    /// Matches Value or Error by invoking the corresponding delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="onValue">A delegate invoked on Value.</param>
+    /// <param name="onError">A delegate invoked on Error.</param>
+    public static void On<TValue, TError>(this in Result<TValue, TError> result, Action<TValue> onValue, Action<TError> onError) =>
+        result.Match(onValue.AsFunc(), onError.AsFunc());
+
+    /// <summary>
+    /// Matches Value or Error by invoking the corresponding delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="onValue">A delegate invoked on Value.</param>
+    /// <param name="onError">A delegate invoked on Error.</param>
+    public static void On<TValue>(this in Result<TValue> result, Action<TValue> onValue, Action<Exception> onError) =>
+        result.Match(onValue.AsFunc(), onError.AsFunc());
+
+    /// <summary>
+    /// If the result is Value invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="onValue">A delegate.</param>
+    public static void OnValue<TValue, TError>(this in Result<TValue, TError> result, Action<TValue> onValue) =>
+        result.Match(onValue.AsFunc(), _ => new());
+
+    /// <summary>
+    /// If the result is Value invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="onValue">A delegate.</param>
+    public static void OnValue<TValue>(this in Result<TValue> result, Action<TValue> onValue) =>
+        result.Match(onValue.AsFunc(), _ => new());
+
+    /// <summary>
+    /// If the result is Error invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="onError">A delegate.</param>
+    public static void OnError<TValue, TError>(this in Result<TValue, TError> result, Action<TError> onError) =>
+        result.Match(_ => new(), onError.AsFunc());
+
+    /// <summary>
+    /// If the result is Error invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="onError">A delegate.</param>
+    public static void OnError<TValue>(this in Result<TValue> result, Action<Exception> onError) =>
+        result.Match(_ => new(), onError.AsFunc());
 }

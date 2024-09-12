@@ -18,8 +18,17 @@ public static class OptionSamples
         var mapResult = some1.Map(value => value + 10);                     // == Some(11)
         var flatMapResult = some2.FlatMap(value => (value + 10).Some());    // == Some(12)
 
-        // Matching can be done:
+        // Matching by invoking corresponding function:
         var matchResult = none1.Match(value => $"Some {value}!", () => "None!");   // == "None!"
+
+        // Matching by invoking corresponding action: 
+        void PrintSome<TValue>(TValue value) => Console.WriteLine($"Some: {value}!");
+        void PrintNone() => Console.WriteLine($"None!");
+
+        some1.On(PrintSome, PrintNone);         // Prints "Some: 1!"
+        some1.OnSome(PrintSome);                // Prints "Some: 1!"
+        some1.OnNone(PrintNone);                // Prints nothing
+        none1.OnNone(PrintNone);                // Prints "None!"
 
         // Converting a nullable value into an Option instance:
         var notNull = "I'm not null!";
