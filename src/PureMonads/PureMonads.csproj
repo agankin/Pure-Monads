@@ -5,14 +5,14 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageId>Pure-Monads</PackageId>
     <PackageTags>Monads</PackageTags>
     <Authors>Andrei Gankin</Authors>
     <RepositoryUrl>https://github.com/agankin/Pure-Monads</RepositoryUrl>
     <PackageProjectUrl>https://github.com/agankin/Pure-Monads</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Description>Contains implementations of the Option and Result monads, Pipe chaining function calls extensions.</Description>
+    <Description>Contains implementations of the Option, Result and Either monads, Pipe chaining function calls extensions.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
