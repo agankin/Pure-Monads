@@ -97,8 +97,12 @@ public static class EitherExtensions
     /// <param name="either">The Either.</param>
     /// <param name="onLeft">A delegate invoked on Left.</param>
     /// <param name="onRight">A delegate invoked on Right.</param>
-    public static void On<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TLeft> onLeft, Action<TRight> onRight) =>
+    /// <returns>The same Either monad.</returns>
+    public static Either<TLeft, TRight> On<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TLeft> onLeft, Action<TRight> onRight)
+    {
         either.Match(onLeft.AsFunc(), onRight.AsFunc());
+        return either;
+    }
 
     /// <summary>
     /// If the Either is Left invokes the given delegate.
@@ -107,8 +111,12 @@ public static class EitherExtensions
     /// <typeparam name="TRight">Right value type.</typeparam>
     /// <param name="either">The Either.</param>
     /// <param name="onLeft">A delegate.</param>
-    public static void OnLeft<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TLeft> onLeft) =>
+    /// <returns>The same Either monad.</returns>
+    public static Either<TLeft, TRight> OnLeft<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TLeft> onLeft)
+    {
         either.Match(onLeft.AsFunc(), _ => new());
+        return either;
+    }
 
     /// <summary>
     /// If the Either is Right invokes the given delegate.
@@ -117,6 +125,10 @@ public static class EitherExtensions
     /// <typeparam name="TRight">Right value type.</typeparam>
     /// <param name="either">The Either.</param>
     /// <param name="onRight">A delegate.</param>
-    public static void OnRight<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TRight> onRight) =>
+    /// <returns>The same Either monad.</returns>
+    public static Either<TLeft, TRight> OnRight<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TRight> onRight)
+    {
         either.Match(_ => new(), onRight.AsFunc());
+        return either;
+    }
 }

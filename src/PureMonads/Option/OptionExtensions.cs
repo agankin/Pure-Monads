@@ -87,22 +87,34 @@ public static class OptionExtensions
     /// <typeparam name="TValue">Value type.</typeparam>
     /// <param name="onSome">A delegate invoked on Some.</param>
     /// <param name="onNone">A delegate invoked on None.</param>
-    public static void On<TValue>(this in Option<TValue> option, Action<TValue> onSome, Action onNone) =>
+    /// <returns>The same option.</returns>
+    public static Option<TValue> On<TValue>(this in Option<TValue> option, Action<TValue> onSome, Action onNone)
+    {
         option.Match(onSome.AsFunc(), onNone.AsFunc());
+        return option;
+    }
 
     /// <summary>
     /// If the option is Some invokes the given delegate.
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>
     /// <param name="onSome">A delegate.</param>
-    public static void OnSome<TValue>(this in Option<TValue> option, Action<TValue> onSome) =>
+    /// <returns>The same option.</returns>
+    public static Option<TValue> OnSome<TValue>(this in Option<TValue> option, Action<TValue> onSome)
+    {
         option.Match(onSome.AsFunc(), () => new());
+        return option;
+    }
 
     /// <summary>
     /// If the option is None invokes the given delegate.
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>
     /// <param name="onNone">A delegate.</param>
-    public static void OnNone<TValue>(this in Option<TValue> option, Action onNone) =>
+    /// <returns>The same option.</returns>
+    public static Option<TValue> OnNone<TValue>(this in Option<TValue> option, Action onNone)
+    {
         option.Match(_ => new(), onNone.AsFunc());
+        return option;
+    }
 }
