@@ -45,7 +45,9 @@ public static class ResultSamples
         var result2 = Result.From(() =>               // == Error(Exception)
         {
             throw new Exception("Error 1");
+#pragma warning disable CS0162 // Unreachable code detected
             return "Value 1";
+#pragma warning restore CS0162 // Unreachable code detected
         });
 
         // Async versions of the methods also exist:
@@ -59,7 +61,9 @@ public static class ResultSamples
             await Task.CompletedTask;
             
             throw new Exception("Error 1");
+#pragma warning disable CS0162 // Unreachable code detected
             return "Value 1";
+#pragma warning restore CS0162 // Unreachable code detected
         });
     }
 }
