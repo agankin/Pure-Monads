@@ -9,4 +9,10 @@ public static class GeneralAssertions
         Assert.That(value, Is.EqualTo(expectedValue));
         return value;
     }
+
+    public static TValue NotNull<TValue>(this TValue? value)
+    {
+        Assert.That(value, Is.Not.EqualTo(null));
+        return value!;
+    }
 }

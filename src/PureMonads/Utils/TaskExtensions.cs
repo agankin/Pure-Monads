@@ -4,7 +4,9 @@ internal static class TaskExtensions
 {
     public static Task<TResult> Map<TValue, TResult>(this Task<TValue> task, Func<TValue, TResult> map)
     {
-        var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        var taskScheduler = SynchronizationContext.Current != null
+            ? TaskScheduler.FromCurrentSynchronizationContext()
+            : TaskScheduler.Default;
         return task.ContinueWith(task => map(task.Result), taskScheduler);
     }
 

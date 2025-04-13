@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -170,5 +171,18 @@ public class OptionTests
         None<string>().OnNone(() => onNoneResults.Add("OnNone 2 invokes onNone"));
 
         onNoneResults.SequenceEqual(["OnNone 2 invokes onNone"]).ItIs(true);
+    }
+
+    [Test(Description = "Tests ValueOrFailure")]
+    public void TestsValueOrFailure()
+    {
+        "value1".Some().ValueOrFailure().ItIs("value1");
+
+        var exception = Assert.Throws<Exception>(() =>
+        {
+            None<string>().ValueOrFailure("It is None.");
+        });
+
+        exception.NotNull().Message.ItIs("It is None.");
     }
 }
