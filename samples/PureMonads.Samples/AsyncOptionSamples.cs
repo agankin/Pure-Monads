@@ -31,17 +31,20 @@ public static class AsyncOptionSamples
         var matchResult = asyncNone1.Match(value => $"Async Some!", () => "None!");   // == "None!"
 
         // Providing alternative values for None:
-        AsyncOption<int> asyncSome100 = asyncNone1.Or(Async(100));       // Directly passed alternative value
-        AsyncOption<int> asyncSome200 = asyncNone1.Or(() => Async(200)); // Alternative value retrieved from a delegate
+        AsyncOption<int> asyncSome100 = asyncNone1.Or(Async(100).Some());       // Directly passed alternative monad
+        AsyncOption<int> asyncSome200 = asyncNone1.Or(() => Async(200).Some()); // Alternative monad retrieved from a delegate
 
-        int value100 = await asyncNone1.OrAsync(100);          // Directly passed alternative monad
-        int value200 = await asyncNone1.OrAsync(() => 200);    // Alternative monad retrieved from a delegate
+        int value100 = await asyncNone1.OrAsync(100);                    // Directly passed alternative value
+        int value200 = await asyncNone1.OrAsync(() => 200);              // Alternative value retrieved from a delegate
+        
+        int value300 = await asyncNone1.OrAsync(Async(300));             // Directly passed alternative async value
+        int value400 = await asyncNone1.OrAsync(() => Async(400));       // Alternative async value retrieved from a delegate
 
         // Extracting a value from Some or throwing an exception:
         try
         {
             await asyncNone1.ValueOrFailureAsync();     // Throws an exception
         }
-        catch {}
+        catch { }
     }
 }
