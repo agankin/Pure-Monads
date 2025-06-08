@@ -1,6 +1,6 @@
 ﻿namespace PureMonads.Samples;
 
-public static class PipeSamples
+public static class PipeMapSamples
 {
     public static async Task RunAsync()
     {
@@ -14,15 +14,17 @@ public static class PipeSamples
         async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
 
         // Chaining functions:
-        var result1 = 10                          // == 55
-            .Pipe(Square)
-            .Pipe(Half)
-            .Pipe(Add5);
+        var result1 = 10                          // == "x = 10, (x * x / 2) + 5 = 55"
+            .PipeMap(Square)
+            .PipeMap(Half)
+            .PipeMap(Add5)
+            .Reduce((source, result) => $"x = {source}, (x * x / 2) + 5 = {result}");
 
         // Chaining async functions:
         var result2 = await 3                     // == 64
-            .PipeAsync(DoubleAsync)
-            .PipeAsync(Subtract2Async)
-            .PipeAsync(QubeAsync);
+            .PipeMapAsync(DoubleAsync)
+            .PipeMapAsync(Subtract2Async)
+            .PipeMapAsync(QubeAsync)
+            .ReduceAsync((source, result) =>  $"x = {source}, (x * 2 - 2) ^ 3 = {result}");
     }
 }
