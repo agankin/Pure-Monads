@@ -26,7 +26,7 @@ public static class OptionExtensions
     /// <returns>An instance of Option monad.</returns>
     public static Option<TResult> FlatMap<TValue, TResult>(this in Option<TValue> option, Func<TValue, Option<TResult>> map) =>
         option.Match(value => map(value), Option<TResult>.None);
-         
+
     /// <summary>
     /// Returns a value extracted from Some or <paramref name="alternativeValue"/>.
     /// </summary>
@@ -95,6 +95,16 @@ public static class OptionExtensions
     }
 
     /// <summary>
+    /// Matches Some or None by invoking the corresponding delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="onSomeAsync">A delegate invoked on Some.</param>
+    /// <param name="onNoneAsync">A delegate invoked on None.</param>
+    /// <returns>A task.</returns>
+    public static Task OnAsync<TValue>(this in Option<TValue> option, Func<TValue, Task> onSomeAsync, Func<Task> onNoneAsync) =>
+        option.Match(onSomeAsync, onNoneAsync);
+
+    /// <summary>
     /// If the option is Some invokes the given delegate.
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>
@@ -107,6 +117,15 @@ public static class OptionExtensions
     }
 
     /// <summary>
+    /// If the option is Some invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="onSomeAsync">A delegate.</param>
+    /// <returns>A task.</returns>
+    public static Task OnSomeAsync<TValue>(this in Option<TValue> option, Func<TValue, Task> onSomeAsync) =>
+        option.Match(onSomeAsync, () => Task.CompletedTask);
+
+    /// <summary>
     /// If the option is None invokes the given delegate.
     /// </summary>
     /// <typeparam name="TValue">Value type.</typeparam>
@@ -117,4 +136,13 @@ public static class OptionExtensions
         option.Match(_ => new(), onNone.AsFunc());
         return option;
     }
+    
+    /// <summary>
+    /// If the option is None invokes the given delegate.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <param name="onNoneAsync">A delegate.</param>
+    /// <returns>A task.</returns>
+    public static Task OnNoneAsync<TValue>(this in Option<TValue> option, Func<Task> onNoneAsync) =>
+        option.Match(_ => Task.CompletedTask, onNoneAsync);
 }
