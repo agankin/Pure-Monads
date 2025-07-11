@@ -14,4 +14,6 @@ internal static class TaskExtensions
     {
         return task.Map<TValue, Task<TResult>>(asyncMap).Unwrap();
     }
+
+    public static Task<TValue> AsTask<TValue>(this TValue value) => Task.FromResult(value);
 }

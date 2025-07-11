@@ -10,13 +10,22 @@ internal static class FuncExtensions
             return new();
         };
     }
-    
+
     public static Func<TArg, Nothing> AsFunc<TArg>(this Action<TArg> action)
     {
         return arg =>
         {
             action(arg);
             return new();
+        };
+    }
+    
+    public static Func<TArg, Task> AsAsyncFunc<TArg>(this Action<TArg> action)
+    {
+        return arg =>
+        {
+            action(arg);
+            return Task.CompletedTask;
         };
     }
 }
