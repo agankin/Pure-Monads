@@ -172,13 +172,13 @@ public static class AsyncResultExtensions
     /// <typeparam name="TError">Error type.</typeparam>
     /// <param name="result">The async result.</param>
     /// <param name="onError">A delegate.</param>
-    public static async Task OnErrorAsync<TValue, TError>(
+    public static void OnError<TValue, TError>(
         this AsyncResult<TValue, TError> result,
         Action<TError> onError)
     {
-        await result.Match(
-            _ => Task.CompletedTask,
-            error => onError.AsAsyncFunc().Invoke(error));
+        result.Match(
+            _ => new(),
+            error => onError.AsFunc().Invoke(error));
     }
 
     /// <summary>
@@ -187,10 +187,10 @@ public static class AsyncResultExtensions
     /// <typeparam name="TValue">Value type.</typeparam>
     /// <param name="result">The async result.</param>
     /// <param name="onError">A delegate.</param>
-    public static async Task OnErrorAsync<TValue>(this AsyncResult<TValue> result, Action<Exception> onError)
+    public static void OnError<TValue>(this AsyncResult<TValue> result, Action<Exception> onError)
     {
-        await result.Match(
-            _ => Task.CompletedTask,
-            error => onError.AsAsyncFunc().Invoke(error));
+        result.Match(
+            _ => new(),
+            error => onError.AsFunc().Invoke(error));
     }
 }

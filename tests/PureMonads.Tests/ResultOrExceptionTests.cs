@@ -112,11 +112,15 @@ public partial class ResultOrExceptionTests
     }
 
     [Test(Description = "Tests From")]
-    public async Task TestsFromAsync()
+    public void TestsFrom()
     {
         From(() => 1).IsValue(1);
         From(new Func<int>(() => throw new TestException("err!"))).IsError(new TestException("err!"));
+    }
 
+    [Test(Description = "Tests FromAsync")]
+    public async Task TestsFromAsync()
+    {
         (await FromAsync(async () => 
         {
             await Task.CompletedTask;

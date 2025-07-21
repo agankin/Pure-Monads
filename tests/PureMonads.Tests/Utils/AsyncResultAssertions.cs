@@ -19,7 +19,7 @@ public static class AsyncResultAssertions
             });
     }
 
-    public static async Task IsValueValue<TValue>(this AsyncResult<TValue> result, TValue expectedValue)
+    public static async Task IsValueAsync<TValue>(this AsyncResult<TValue> result, TValue expectedValue)
     {
         Assert.That(result.HasValue, Is.EqualTo(true));
 

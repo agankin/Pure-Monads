@@ -177,16 +177,16 @@ public partial class AsyncResultTests
     }
 
     [Test(Description = "Tests OnError.")]
-    public async Task TestsOnError()
+    public void TestsOnError()
     {
         var onErrorResults = new List<string>();
 
         var strTask = Task.FromResult("value");
 
-        await Value<string, int>(strTask)
-            .OnErrorAsync(_ => onErrorResults.Add("OnError 1 invokes onError"));
-        await Error<string, int>(1)
-            .OnErrorAsync(_ => onErrorResults.Add("OnError 2 invokes onError"));
+        Value<string, int>(strTask)
+            .OnError(_ => onErrorResults.Add("OnError 1 invokes onError"));
+        Error<string, int>(1)
+            .OnError(_ => onErrorResults.Add("OnError 2 invokes onError"));
 
         onErrorResults.SequenceEqual(["OnError 2 invokes onError"]).ItIs(true);
     }
