@@ -43,9 +43,9 @@ public static class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="map">A mapping delegate.</param>
     /// <returns>An instance of AsyncOption monad.</returns>
-    public static async Task<AsyncOption<TResult>> FlatMapAsync<TValue, TResult>(this AsyncOption<TValue> asyncOption, Func<TValue, AsyncOption<TResult>> map)
+    public static Task<AsyncOption<TResult>> FlatMapAsync<TValue, TResult>(this AsyncOption<TValue> asyncOption, Func<TValue, AsyncOption<TResult>> map)
     {
-        return await asyncOption.Match(
+        return asyncOption.Match(
             mapSome: task => task.Map(map),
             onNone: () => Task.FromResult(AsyncOption<TResult>.None()));
     }
@@ -57,9 +57,9 @@ public static class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="alternativeValue">An alternative value.</param>
     /// <returns>A value extracted from Some or <paramref name="alternativeValue"/>.</returns>
-    public static async Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, TValue alternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, TValue alternativeValue)
     {
-        return await asyncOption.Match(
+        return asyncOption.Match(
             mapSome: task => task,
             onNone: () => Task.FromResult(alternativeValue));
     }
@@ -73,9 +73,9 @@ public static class AsyncOptionExtensions
     /// <returns>
     /// A value extracted from Some or returned from <paramref name="getAlternativeValue"/>.
     /// </returns>
-    public static async Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<TValue> getAlternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<TValue> getAlternativeValue)
     {
-        return await asyncOption.Match(
+        return asyncOption.Match(
             mapSome: task => task,
             onNone: () => Task.FromResult(getAlternativeValue()));
     }
@@ -87,9 +87,9 @@ public static class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="alternativeValue">An alternative value.</param>
     /// <returns>A value extracted from Some or <paramref name="alternativeValue"/>.</returns>
-    public static async Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Task<TValue> alternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Task<TValue> alternativeValue)
     {
-        return await asyncOption.Match(
+        return asyncOption.Match(
             mapSome: task => task,
             onNone: () => alternativeValue);
     }
@@ -103,9 +103,9 @@ public static class AsyncOptionExtensions
     /// <returns>
     /// A value extracted from Some or returned from <paramref name="getAlternativeValue"/>.
     /// </returns>
-    public static async Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<Task<TValue>> getAlternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<Task<TValue>> getAlternativeValue)
     {
-        return await asyncOption.Match(
+        return asyncOption.Match(
             mapSome: task => task,
             onNone: getAlternativeValue);
     }
@@ -147,9 +147,8 @@ public static class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <returns>An extracted value.</returns>
     /// <exception cref="Exception">The exception thrown if the async option is None.</exception>
-    public static async Task<TValue> ValueOrFailureAsync<TValue>(this AsyncOption<TValue> asyncOption, string? message = null)
+    public static Task<TValue> ValueOrFailureAsync<TValue>(this AsyncOption<TValue> asyncOption, string? message = null)
     {
-        return await asyncOption.OrAsync(
-            new Func<TValue>(() => throw new Exception(message ?? "AsyncOption is None.")));
+        return asyncOption.OrAsync(new Func<TValue>(() => throw new Exception(message ?? "AsyncOption is None.")));
     }
 }

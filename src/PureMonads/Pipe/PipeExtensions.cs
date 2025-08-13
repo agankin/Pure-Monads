@@ -20,10 +20,9 @@ public static class PipeExtensions
     /// <param name="value">The value.</param>
     /// <param name="transformAsync">A transforming function.</param>
     /// <returns>A task representing a result of the transforming function invocation.</returns>
-    public static async Task<TResult> PipeAsync<TValue, TResult>(this TValue value, Func<TValue, Task<TResult>> transformAsync)
+    public static Task<TResult> PipeAsync<TValue, TResult>(this TValue value, Func<TValue, Task<TResult>> transformAsync)
     {
-        var result = await transformAsync(value);
-        return result;
+        return transformAsync(value);
     }
 
     /// <summary>

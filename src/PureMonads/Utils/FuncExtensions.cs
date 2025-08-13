@@ -7,7 +7,7 @@ internal static class FuncExtensions
         return () =>
         {
             action();
-            return new();
+            return default;
         };
     }
 
@@ -16,7 +16,7 @@ internal static class FuncExtensions
         return arg =>
         {
             action(arg);
-            return new();
+            return default;
         };
     }
     
