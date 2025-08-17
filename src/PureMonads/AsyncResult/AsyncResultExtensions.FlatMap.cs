@@ -15,7 +15,7 @@ public static partial class AsyncResultExtensions
     /// <param name="map">A mapping delegate.</param>
     /// <returns>An instance of AsyncResult monad.</returns>
     public static Task<AsyncResult<TResult, TError>> FlatMapAsync<TValue, TResult, TError>(
-        this AsyncResult<TValue, TError> result,
+        this in AsyncResult<TValue, TError> result,
         Func<TValue, AsyncResult<TResult, TError>> map)
     {
         return result.Match(
@@ -32,7 +32,7 @@ public static partial class AsyncResultExtensions
     /// <param name="map">A mapping delegate.</param>
     /// <returns>An instance of AsyncResult monad.</returns>
     public static Task<AsyncResult<TResult>> FlatMapAsync<TValue, TResult>(
-        this AsyncResult<TValue> result,
+        this in AsyncResult<TValue> result,
         Func<TValue, AsyncResult<TResult>> map)
     {
         return result.Match(

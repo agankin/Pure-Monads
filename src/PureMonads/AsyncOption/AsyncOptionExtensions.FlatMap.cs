@@ -13,7 +13,7 @@ public static partial class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="map">A mapping delegate.</param>
     /// <returns>An instance of AsyncOption monad.</returns>
-    public static Task<AsyncOption<TResult>> FlatMapAsync<TValue, TResult>(this AsyncOption<TValue> asyncOption, Func<TValue, AsyncOption<TResult>> map)
+    public static Task<AsyncOption<TResult>> FlatMapAsync<TValue, TResult>(this in AsyncOption<TValue> asyncOption, Func<TValue, AsyncOption<TResult>> map)
     {
         return asyncOption.Match(
             mapSome: task => task.Map(map),

@@ -29,7 +29,7 @@ public static partial class PipeMapExtensions
     /// <param name="reduceAsync">A reducing function.</param>
     /// <returns>A task representing the result of the reducer invocation.</returns>
     public static Task<TResult2> ReduceAsync<TSource, TResult, TResult2>(
-        this PipeMapResult<TSource, TResult> pipeMapResult,
+        this in PipeMapResult<TSource, TResult> pipeMapResult,
         Func<TSource, TResult, Task<TResult2>> reduceAsync)
     {
         var (source, result) = pipeMapResult;

@@ -12,7 +12,7 @@ public static partial class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="alternativeValue">An alternative value.</param>
     /// <returns>A value extracted from Some or <paramref name="alternativeValue"/>.</returns>
-    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, TValue alternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this in AsyncOption<TValue> asyncOption, TValue alternativeValue)
     {
         return asyncOption.Match(
             mapSome: task => task,
@@ -28,7 +28,7 @@ public static partial class AsyncOptionExtensions
     /// <returns>
     /// A value extracted from Some or returned from <paramref name="getAlternativeValue"/>.
     /// </returns>
-    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<TValue> getAlternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this in AsyncOption<TValue> asyncOption, Func<TValue> getAlternativeValue)
     {
         return asyncOption.Match(
             mapSome: task => task,
@@ -42,7 +42,7 @@ public static partial class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="alternativeValue">An alternative value.</param>
     /// <returns>A value extracted from Some or <paramref name="alternativeValue"/>.</returns>
-    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Task<TValue> alternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this in AsyncOption<TValue> asyncOption, Task<TValue> alternativeValue)
     {
         return asyncOption.Match(
             mapSome: task => task,
@@ -58,7 +58,7 @@ public static partial class AsyncOptionExtensions
     /// <returns>
     /// A value extracted from Some or returned from <paramref name="getAlternativeValue"/>.
     /// </returns>
-    public static Task<TValue> OrAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<Task<TValue>> getAlternativeValue)
+    public static Task<TValue> OrAsync<TValue>(this in AsyncOption<TValue> asyncOption, Func<Task<TValue>> getAlternativeValue)
     {
         return asyncOption.Match(
             mapSome: task => task,
