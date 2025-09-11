@@ -1,6 +1,6 @@
 ﻿using PureMonads.Samples;
 
-OptionSamples.Run();
+await OptionSamples.RunAsync();
 await AsyncOptionSamples.RunAsync();
 await ResultSamples.RunAsync();
 EitherSamples.Run();

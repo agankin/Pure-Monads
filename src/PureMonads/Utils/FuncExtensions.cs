@@ -19,6 +19,15 @@ internal static class FuncExtensions
             return default;
         };
     }
+
+    public static Func<Task> AsAsyncFunc(this Action action)
+    {
+        return () =>
+        {
+            action();
+            return Task.CompletedTask;
+        };
+    }
     
     public static Func<TArg, Task> AsAsyncFunc<TArg>(this Action<TArg> action)
     {

@@ -38,6 +38,15 @@ var none2 = None<int>();                // via factory method in non-generic sta
 var mapResult = some1.Map(value => value + 10);                     // == Some(11)
 var flatMapResult = some2.FlatMap(value => (value + 10).Some());    // == Some(12)
 
+// Standard monad operations supporting async mappers:
+var mapAsyncResult = some1.MapAsync(value => Task.FromResult(value + 10));     // == AsyncOption Some(11)
+
+AsyncOption<int> AsyncSome(int value) => AsyncOption.Some(Task.FromResult(value));
+var flatMapAsyncResult = some2.FlatMap(value => AsyncSome(value + 10));        // == AsyncOption Some(12)
+
+Task<Option<int>> Async(int value) => Task.FromResult(value.Some());
+var flatMapResult2 = await some2.FlatMapAsync(value => Async(value + 10));     // == Some(12)
+
 // Matching by invoking corresponding function:
 var matchResult = none1.Match(value => $"Some {value}!", () => "None!");   // == "None!"
 
@@ -49,6 +58,26 @@ some1.On(PrintSome, PrintNone);         // Prints "Some: 1!"
 some1.OnSome(PrintSome);                // Prints "Some: 1!"
 some1.OnNone(PrintNone);                // Prints nothing
 none1.OnNone(PrintNone);                // Prints "None!"
+
+// The same with async actions:
+Task PrintSomeAsync<TValue>(TValue value)
+{
+    Console.WriteLine($"Some: {value}!");
+    return Task.CompletedTask;
+}
+Task PrintNoneAsync()
+{
+    Console.WriteLine($"None!");
+    return Task.CompletedTask;
+}
+
+await some1.OnAsync(PrintSomeAsync, PrintNoneAsync);    // All 3 print "Some: 1!"
+await some1.OnAsync(PrintSomeAsync, PrintNone);
+await some1.OnAsync(PrintSome, PrintNoneAsync);
+
+await some1.OnSomeAsync(PrintSomeAsync);                // Prints "Some: 1!"
+await some1.OnNoneAsync(PrintNoneAsync);                // Prints nothing
+await none1.OnNoneAsync(PrintNoneAsync);                // Prints "None!"
 
 // Converting a nullable value into an Option instance:
 var notNull = "I'm not null!";
@@ -67,6 +96,13 @@ Option<int> alt4 = none1.Or(() => 100.Some());    // Alternative monad retrieved
 try
 {
     none1.ValueOrFailure();     // Throws an exception
+}
+catch {}
+
+// The same with a custom exception:
+try
+{
+    none1.ValueOrFailure(() => new InvalidOperationException());     // Throws InvalidOperationException
 }
 catch {}
 

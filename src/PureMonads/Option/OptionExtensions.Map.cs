@@ -15,4 +15,15 @@ public static partial class OptionExtensions
     /// <returns>An instance of Option monad.</returns>
     public static Option<TResult> Map<TValue, TResult>(this in Option<TValue> option, Func<TValue, TResult> map) =>
         option.Match(value => map(value), Option<TResult>.None);
+
+    /// <summary>
+    /// Maps a value if the option is Some.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <typeparam name="TResult">Mapped value type.</typeparam>
+    /// <param name="option">The option.</param>
+    /// <param name="map">A mapping delegate.</param>
+    /// <returns>An instance of AsyncOption monad.</returns>
+    public static AsyncOption<TResult> MapAsync<TValue, TResult>(this in Option<TValue> option, Func<TValue, Task<TResult>> map) =>
+        option.Match(value => map(value), AsyncOption<TResult>.None);
 }

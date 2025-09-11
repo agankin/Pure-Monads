@@ -19,4 +19,17 @@ public partial class OptionTests
 
         exception.NotNull().Message.ItIs("It is None.");
     }
+
+    [Test(Description = "Tests ValueOrFailure (custom exception)")]
+    public void TestsValueOrFailureCustom()
+    {
+        "value1".Some().ValueOrFailure(() => new InvalidOperationException()).ItIs("value1");
+
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+        {
+            None<string>().ValueOrFailure(() => new InvalidOperationException("It is None."));
+        });
+
+        exception.NotNull().Message.ItIs("It is None.");
+    }
 }
