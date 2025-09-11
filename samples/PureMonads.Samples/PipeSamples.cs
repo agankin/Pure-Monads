@@ -9,20 +9,23 @@ public static class PipeSamples
         int Half(int x) => x / 2;
         int Add5(int x) => x + 5;
 
-        async Task<int> DoubleAsync(int x) => await Task.FromResult(x * 2);
-        async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
-        async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
-
         // Chaining functions:
         var result1 = 10                          // == 55
             .Pipe(Square)
             .Pipe(Half)
             .Pipe(Add5);
 
-        // Chaining async functions:
-        var result2 = await 3                     // == 64
-            .PipeAsync(DoubleAsync)
+        // Async functions used in examples
+        async Task<int> Mul2Async(int x) => await Task.FromResult(x * 2);
+        async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
+        async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
+
+        // Chaining async and sync functions:
+        var result2 = await 1                     // == 125
+            .Pipe(Add5)
+            .PipeAsync(Mul2Async)
             .PipeAsync(Subtract2Async)
+            .PipeAsync(Half)
             .PipeAsync(QubeAsync);
     }
 }

@@ -5,7 +5,9 @@
 Contains implementations of the most commonly used monads:
 
 - **Option**
+- **AsyncOption**
 - **Result**
+- **AsyncResult**
 - **Either**
 
 In addition contains **Pipe extensions** and **PipeMap extensions** for chaining function calls.
@@ -285,36 +287,35 @@ int Square(int x) => x * x;
 int Half(int x) => x / 2;
 int Add5(int x) => x + 5;
 
-async Task<int> DoubleAsync(int x) => await Task.FromResult(x * 2);
-async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
-async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
-
 // Chaining functions:
 var result1 = 10                          // == 55
     .Pipe(Square)
     .Pipe(Half)
     .Pipe(Add5);
 
-// Chaining async functions:
-var result2 = await 3                     // == 64
-    .PipeAsync(DoubleAsync)
+// Async functions used in examples
+async Task<int> Mul2Async(int x) => await Task.FromResult(x * 2);
+async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
+async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
+
+// Chaining async and sync functions:
+var result2 = await 1                     // == 125
+    .Pipe(Add5)
+    .PipeAsync(Mul2Async)
     .PipeAsync(Subtract2Async)
+    .PipeAsync(Half)
     .PipeAsync(QubeAsync);
 ```
 
 ### PipeMap extensions
 
-**PipeMap extensions** allow chaining function calls having a calculated value along with the initial value in the result.
+**PipeMap extensions** allow chaining function calls with the initial value stored in chaining context. Both initial and calculated values are passed to the final reduction call.
 
 ```cs
 // Functions used in examples
 int Square(int x) => x * x;
 int Half(int x) => x / 2;
 int Add5(int x) => x + 5;
-
-async Task<int> DoubleAsync(int x) => await Task.FromResult(x * 2);
-async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
-async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
 
 // Chaining functions:
 var result1 = 10                          // == "x = 10, (x * x / 2) + 5 = 55"
@@ -323,10 +324,17 @@ var result1 = 10                          // == "x = 10, (x * x / 2) + 5 = 55"
     .PipeMap(Add5)
     .Reduce((source, result) => $"x = {source}, (x * x / 2) + 5 = {result}");
 
+// Async functions used in examples
+async Task<int> Mul2Async(int x) => await Task.FromResult(x * 2);
+async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
+async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
+
 // Chaining async functions:
-var result2 = await 3                     // == 64
-    .PipeMapAsync(DoubleAsync)
+var result2 = await 1                     // == "x = 1, (((x + 5) * 2 - 2) / 2 ) ^ 3 = 125"
+    .PipeMap(Add5)
+    .PipeMapAsync(Mul2Async)
     .PipeMapAsync(Subtract2Async)
+    .PipeMapAsync(Half)
     .PipeMapAsync(QubeAsync)
-    .ReduceAsync((source, result) =>  $"x = {source}, (x * 2 - 2) ^ 3 = {result}");
+    .ReduceAsync((source, result) =>  $"x = {source}, (((x + 5) * 2 - 2) / 2 ) ^ 3 = {result}");
 ```
