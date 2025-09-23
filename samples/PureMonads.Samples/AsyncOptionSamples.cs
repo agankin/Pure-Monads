@@ -36,7 +36,7 @@ public static class AsyncOptionSamples
 
         int value100 = await asyncNone1.OrAsync(100);                    // Directly passed alternative value
         int value200 = await asyncNone1.OrAsync(() => 200);              // Alternative value retrieved from a delegate
-        
+
         int value300 = await asyncNone1.OrAsync(Async(300));             // Directly passed alternative async value
         int value400 = await asyncNone1.OrAsync(() => Async(400));       // Alternative async value retrieved from a delegate
 
@@ -46,5 +46,11 @@ public static class AsyncOptionSamples
             await asyncNone1.ValueOrFailureAsync();     // Throws an exception
         }
         catch { }
+
+        // Awaiting with wrapping value or exception into an instance of Result monad:
+        var asyncValue = Task.FromResult(1);
+        var asyncError = Task.FromException<int>(new Exception());
+        Result<Option<int>> valueResult = await AsyncOption.Some(asyncValue).AsResultAsync();     // Value(1)
+        Result<Option<int>> error = await AsyncOption.Some(asyncError).AsResultAsync();           // Error(Exception)
     }
 }

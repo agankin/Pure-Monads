@@ -42,4 +42,30 @@ public static partial class ResultExtensions
     /// <returns>An instance of Option monad.</returns>
     public static Option<Exception> Error<TValue>(this Result<TValue> result) =>
         result.Match(_ => Option.None<Exception>(), Option.Some);
+
+    /// <summary>
+    /// Awaits and returns result representing a value or exception occured.
+    /// </summary>
+    /// <typeparam name="TValue">Result type.</typeparam>
+    /// <param name="asyncValue">A task representing an async value.</param>
+    /// <returns>>A task representing an async operation returning result.</returns>
+    public static async Task<Result<TValue>> AsResultAsync<TValue>(this Task<TValue> asyncValue)
+    {
+        try
+        {
+            Result<TValue> valueResult = await asyncValue;
+            return valueResult;
+        }
+        catch (AggregateException ex)
+        {
+            var flattened = ex.Flatten();
+            return flattened.InnerExceptions.Count > 1
+                ? flattened
+                : flattened.InnerExceptions.First();
+        }
+        catch (Exception ex)
+        {
+            return ex;
+        }
+    }
 }

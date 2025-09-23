@@ -59,11 +59,17 @@ public static class ResultSamples
         var result4 = await Result.FromAsync(async () =>    // == Error(Exception)
         {
             await Task.CompletedTask;
-            
+
             throw new Exception("Error 1");
 #pragma warning disable CS0162 // Unreachable code detected
             return "Value 1";
 #pragma warning restore CS0162 // Unreachable code detected
         });
+        
+        // Awaiting with wrapping value or exception into an instance of Result monad:
+        var asyncValue = Task.FromResult(1);
+        var asyncError = Task.FromException<int>(new Exception());
+        Result<int> valueResult = await asyncValue.AsResultAsync();     // Value(1)
+        Result<int> error = await asyncError.AsResultAsync();           // Error(Exception)
     }
 }

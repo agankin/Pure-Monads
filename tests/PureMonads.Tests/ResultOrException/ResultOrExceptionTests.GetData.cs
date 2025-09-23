@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace PureMonads.Tests;
@@ -18,5 +20,16 @@ public partial class ResultOrExceptionTests
             .Value().IsNone();
         Error<int>(new TestException("err!"))
             .Error().IsSome(new TestException("err!"));
+    }
+
+    [Test(Description = "Tests AsResultAsync")]
+    public async Task TestsAsResultAsync()
+    {
+        var result1 = await Task.FromResult(1).AsResultAsync();
+        result1.IsValue(1);
+
+        var testException = new TestException("Exception!");
+        var resultEx = await Task.FromException<int>(testException).AsResultAsync();
+        resultEx.IsError(testException);
     }
 }

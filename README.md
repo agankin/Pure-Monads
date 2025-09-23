@@ -164,6 +164,12 @@ try
     await asyncNone1.ValueOrFailureAsync();     // Throws an exception
 }
 catch { }
+
+// Awaiting with wrapping value or exception into an instance of Result monad:
+var asyncValue = Task.FromResult(1);
+var asyncError = Task.FromException<int>(new Exception());
+Result<Option<int>> valueResult = await AsyncOption.Some(asyncValue).AsResultAsync();     // Value(1)
+Result<Option<int>> error = await AsyncOption.Some(asyncError).AsResultAsync();           // Error(Exception)
 ```
 
 ### Result
@@ -214,7 +220,9 @@ var result1 = Result.From(() => "Value 1");   // == Value("Value 1)"
 var result2 = Result.From(() =>               // == Error(Exception)
 {
     throw new Exception("Error 1");
+#pragma warning disable CS0162 // Unreachable code detected
     return "Value 1";
+#pragma warning restore CS0162 // Unreachable code detected
 });
 
 // Async versions of the methods also exist:
@@ -226,10 +234,18 @@ var result3 = await Result.FromAsync(async () =>    // == Value("Value 1")
 var result4 = await Result.FromAsync(async () =>    // == Error(Exception)
 {
     await Task.CompletedTask;
-    
+
     throw new Exception("Error 1");
+#pragma warning disable CS0162 // Unreachable code detected
     return "Value 1";
+#pragma warning restore CS0162 // Unreachable code detected
 });
+
+// Awaiting with wrapping value or exception into an instance of Result monad:
+var asyncValue = Task.FromResult(1);
+var asyncError = Task.FromException<int>(new Exception());
+Result<int> valueResult = await asyncValue.AsResultAsync();     // Value(1)
+Result<int> error = await asyncError.AsResultAsync();           // Error(Exception)
 ```
 
 ### Either
