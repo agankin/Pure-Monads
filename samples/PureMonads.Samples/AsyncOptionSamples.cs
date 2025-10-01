@@ -30,6 +30,26 @@ public static class AsyncOptionSamples
         // Matching by invoking corresponding function:
         var matchResult = asyncNone1.Match(value => $"Async Some!", () => "None!");   // == "None!"
 
+        // Matching by invoking corresponding delegate:
+        Task PrintSomeAsync<TValue>(TValue value)
+        {
+            Console.WriteLine($"Async Some: {value}!");
+            return Task.CompletedTask;
+        }
+
+        Task PrintNoneAsync()
+        {
+            Console.WriteLine($"Async None!");
+            return Task.CompletedTask;
+        }
+        
+        await asyncSome1.OnAsync(PrintSomeAsync, PrintNoneAsync);    // Prints "Async Some: 1!"
+        await asyncNone1.OnAsync(PrintSomeAsync, PrintNoneAsync);    // Prints "Async None!"
+
+        await asyncSome1.OnSomeAsync(PrintSomeAsync);                // Prints "Async Some: 1!"
+        await asyncSome1.OnNoneAsync(PrintNoneAsync);                // Prints nothing
+        await asyncNone1.OnNoneAsync(PrintNoneAsync);                // Prints "Async None!"
+
         // Providing alternative values for None:
         AsyncOption<int> asyncSome100 = asyncNone1.Or(Async(100).Some());       // Directly passed alternative monad
         AsyncOption<int> asyncSome200 = asyncNone1.Or(() => Async(200).Some()); // Alternative monad retrieved from a delegate
