@@ -3,7 +3,7 @@
 await OptionSamples.RunAsync();
 await AsyncOptionSamples.RunAsync();
 await ResultSamples.RunAsync();
-EitherSamples.Run();
+await EitherSamples.RunAsync();
 await PipeSamples.RunAsync();
 await PipeMapSamples.RunAsync();
 
