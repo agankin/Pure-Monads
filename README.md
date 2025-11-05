@@ -214,6 +214,15 @@ Result<int, string> error3 = "Error 3";              // by implicit conversion
 var mapResult = value1.Map(value => value + 10);                              // == Value(11)
 var flatMapResult = value2.FlatMap(value => Value<int, string>(value + 10));  // == Value(12)
 
+// Standard monad operations supporting async mappers:
+var mapAsyncResult = await value1.MapAsync(                                   // == Value(11)
+    value => Task.FromResult(value + 10));
+var flatMapAsyncResult = await value2.FlatMapAsync(                           // == Value(12)
+    value => Task.FromResult(Value<int, string>(value + 10)));
+
+AsyncResult<int, string> AsyncValue(int value) => AsyncResult<int, string>.Value(Task.FromResult(value));
+var flatMapResult2 = value2.FlatMap(value => AsyncValue(value + 10));         // == AsyncValue(12)
+
 // Matching by invoking corresponding function:
 var matchResult = error1.Match(     // == "Error: Error 1"
     value => $"Value: {value}",
@@ -227,6 +236,27 @@ value1.On(PrintValue, PrintError);       // Prints "Value: 1"
 value1.OnValue(PrintValue);              // Prints "Value: 1"
 value1.OnError(PrintError);              // Prints nothing
 error1.OnError(PrintError);              // Prints "Error: Error 1"
+
+// The same with async actions:
+Task PrintValueAsync<TValue>(TValue value)
+{
+    Console.WriteLine($"Value: {value}");
+    return Task.CompletedTask;
+}
+
+Task PrintErrorAsync<TError>(TError err)
+{
+    Console.WriteLine($"Error: {err}");
+    return Task.CompletedTask;
+}
+
+await value1.OnAsync(PrintValueAsync, PrintErrorAsync);   // All 3 print "Value: 1"
+await value1.OnAsync(PrintValueAsync, PrintError);
+await value1.OnAsync(PrintValue, PrintErrorAsync);
+
+await value1.OnValueAsync(PrintValueAsync);               // Prints "Value: 1"
+await value1.OnErrorAsync(PrintErrorAsync);               // Prints nothing
+await error1.OnErrorAsync(PrintErrorAsync);               // Prints "Error: Error 1"
 
 // Extracting a value or an error as Option<TValue> or Option<TError>:
 var someValue1 = value1.Value();     // == Some(1)

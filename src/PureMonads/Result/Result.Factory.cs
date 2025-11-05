@@ -63,7 +63,7 @@ public static class Result
     /// a returned value or an exception occured.
     /// </summary>
     /// <typeparam name="TResult">Result type.</typeparam>
-    /// <param name="func">A delegate.</param>
+    /// <param name="asyncFunc">A delegate.</param>
     /// <returns>An instance of Result monad.</returns>
     public static async Task<Result<TResult>> FromAsync<TResult>(Func<Task<TResult>> asyncFunc)
     {

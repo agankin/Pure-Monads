@@ -14,8 +14,28 @@ public static partial class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="map">A mapping delegate.</param>
     /// <returns>An instance of Result monad.</returns>
-    public static Result<TResult, TError> Map<TValue, TResult, TError>(this Result<TValue, TError> result, Func<TValue, TResult> map) =>
-        result.Match(value => map(value), Result<TResult, TError>.Error);
+    public static Result<TResult, TError> Map<TValue, TResult, TError>(
+        this Result<TValue, TError> result,
+        Func<TValue, TResult> map)
+    {
+        return result.Match(value => map(value), Result<TResult, TError>.Error);
+    }
+
+    /// <summary>
+    /// Maps a value if the result is Value.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <typeparam name="TResult">Mapped value type.</typeparam>
+    /// <typeparam name="TError">Error type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="mapAsync">A mapping delegate.</param>
+    /// <returns>An instance of AsyncResult monad.</returns>
+    public static AsyncResult<TResult, TError> MapAsync<TValue, TResult, TError>(
+        this Result<TValue, TError> result,
+        Func<TValue, Task<TResult>> mapAsync)
+    {
+        return result.Match(value => mapAsync(value), AsyncResult<TResult, TError>.Error);
+    }
 
     /// <summary>
     /// Maps a value if the result is Value.
@@ -25,6 +45,23 @@ public static partial class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="map">A mapping delegate.</param>
     /// <returns>An instance of Result monad.</returns>
-    public static Result<TResult> Map<TValue, TResult>(this Result<TValue> result, Func<TValue, TResult> map) =>
-        result.Match(value => map(value), Result<TResult>.Error);
+    public static Result<TResult> Map<TValue, TResult>(this Result<TValue> result, Func<TValue, TResult> map)
+    {
+        return result.Match(value => map(value), Result<TResult>.Error);
+    }
+
+    /// <summary>
+    /// Maps a value if the result is Value.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    /// <typeparam name="TResult">Mapped value type.</typeparam>
+    /// <param name="result">The result.</param>
+    /// <param name="mapAsync">A mapping delegate.</param>
+    /// <returns>An instance of AsyncResult monad.</returns>
+    public static AsyncResult<TResult> MapAsync<TValue, TResult>(
+        this Result<TValue> result,
+        Func<TValue, Task<TResult>> mapAsync)
+    {
+        return result.Match(value => mapAsync(value), AsyncResult<TResult>.Error);
+    }
 }
