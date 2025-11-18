@@ -12,7 +12,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests Eq")]
     public void TestsEquality()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
         var Error = Error<int>;
 
         var err1 = new Exception("err1");
@@ -30,7 +30,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests ==")]
     public void TestsEqOperator()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
         var Error = Error<int>;
 
         var err1 = new Exception("err1");
@@ -48,7 +48,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests !=")]
     public void TestsInEqOperator()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
         var Error = Error<int>;
 
         var err1 = new Exception("err1");
@@ -66,16 +66,19 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests Match")]
     public async Task TestsMatch()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
 
         (
             await AsyncValue(1)
                 .Match(
                     async value => $"value: {await value}",
-                    error => Task.FromResult($"error: {error.Message}"))
+                    error => $"error: {error.Message}".AsTask())
         ).ItIs("value: 1");
 
         Error<int>(new TestException("err!"))
-            .Match(value => $"value: {value}", error => $"error: {error.Message}").ItIs("error: err!");
+            .Match(
+                value => $"value: {value}",
+                error => $"error: {error.Message}")
+            .ItIs("error: err!");
     }
 }

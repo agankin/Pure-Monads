@@ -70,6 +70,7 @@ public static class Result
         try
         {
             Result<TResult> func = await asyncFunc();
+            
             return func;
         }
         catch (Exception ex)

@@ -19,11 +19,9 @@ public partial class OptionTests
     [Test(Description = "Tests MapAsync")]
     public async Task TestsMapAsync()
     {
-        Task<string> AsyncValue(string value) => Task.FromResult(value);
-
         await "value".Some()
-            .MapAsync(value => AsyncValue(value + " 2")).IsSomeAsync("value 2");
+            .MapAsync(value => (value + " 2").AsTask()).IsSomeAsync("value 2");
         None<string>()
-            .MapAsync(value => AsyncValue(value + " 2")).IsNone();
+            .MapAsync(value => (value + " 2").AsTask()).IsNone();
     }
 }

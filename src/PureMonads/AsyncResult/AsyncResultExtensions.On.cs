@@ -30,10 +30,7 @@ public static partial class AsyncResultExtensions
     /// <param name="result">The async result.</param>
     /// <param name="onValue">A delegate invoked on Value.</param>
     /// <param name="onError">A delegate invoked on Error.</param>
-    public static Task OnAsync<TValue>(
-        this AsyncResult<TValue> result,
-        Action<TValue> onValue,
-        Action<Exception> onError)
+    public static Task OnAsync<TValue>(this AsyncResult<TValue> result, Action<TValue> onValue, Action<Exception> onError)
     {
         return result.Match(
             task => task.Map(onValue.AsFunc()),
@@ -74,9 +71,7 @@ public static partial class AsyncResultExtensions
     /// <typeparam name="TError">Error type.</typeparam>
     /// <param name="result">The async result.</param>
     /// <param name="onError">A delegate.</param>
-    public static void OnError<TValue, TError>(
-        this AsyncResult<TValue, TError> result,
-        Action<TError> onError)
+    public static void OnError<TValue, TError>(this AsyncResult<TValue, TError> result, Action<TError> onError)
     {
         result.Match(
             _ => new(),

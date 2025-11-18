@@ -24,24 +24,22 @@ public partial class EitherTests
     [Test(Description = "Tests FlatMapLeftAsync")]
     public async Task TestsFlatMapLeftAsync()
     {
-        Task<Either<int, string>> Async(Either<int, string> either) => Task.FromResult(either);
-
         (
             await Left<int, string>(1)
-                .FlatMapLeftAsync(left => Async(Left<int, string>(left + 1)))
+                .FlatMapLeftAsync(left => Left<int, string>(left + 1).AsTask())
         ).IsLeft(2);
         (
             await Left<int, string>(1)
-                .FlatMapLeftAsync(left => Async(Right<int, string>($"Right: {left + 1}")))
+                .FlatMapLeftAsync(left => Right<int, string>($"Right: {left + 1}").AsTask())
         ).IsRight("Right: 2");
 
         (
             await Right<int, string>("2")
-                .FlatMapLeftAsync(_ => Async(Left<int, string>(1)))
+                .FlatMapLeftAsync(_ => Left<int, string>(1).AsTask())
         ).IsRight("2");
         (
             await Right<int, string>("2")
-                .FlatMapLeftAsync(_ => Async(Right<int, string>("Right: 2")))
+                .FlatMapLeftAsync(_ => Right<int, string>("Right: 2").AsTask())
         ).IsRight("2");
     }
 
@@ -61,25 +59,23 @@ public partial class EitherTests
 
     [Test(Description = "Tests FlatMapRightAsync")]
     public async Task TestsFlatMapRightAsync()
-    {
-        Task<Either<int, string>> Async(Either<int, string> either) => Task.FromResult(either);
-        
+    {        
         (
             await Left<int, string>(1)
-                .FlatMapRightAsync(_ => Async(Left<int, string>(2)))
+                .FlatMapRightAsync(_ => Left<int, string>(2).AsTask())
         ).IsLeft(1);
         (
             await Left<int, string>(1)
-                .FlatMapRightAsync(_ => Async(Right<int, string>("Right: 2")))
+                .FlatMapRightAsync(_ => Right<int, string>("Right: 2").AsTask())
         ).IsLeft(1);
 
         (
             await Right<int, string>("2")
-                .FlatMapRightAsync(_ => Async(Left<int, string>(1)))
+                .FlatMapRightAsync(_ => Left<int, string>(1).AsTask())
         ).IsLeft(1);
         (
             await Right<int, string>("2")
-                .FlatMapRightAsync(right => Async(Right<int, string>($"Right: {right}")))
+                .FlatMapRightAsync(right => Right<int, string>($"Right: {right}").AsTask())
         ).IsRight("Right: 2");
     }
 }

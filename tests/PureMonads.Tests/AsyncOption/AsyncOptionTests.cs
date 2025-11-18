@@ -11,48 +11,37 @@ public partial class AsyncOptionTests
     [Test(Description = "Tests Eq")]
     public void TestsEquality()
     {
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        task1.Some().Equals(task1.Some()).ItIs(true);
-        task1.Some().Equals(task2.Some()).ItIs(false);
+        1.AsTask().Some().Equals(1.AsTask().Some()).ItIs(true);
+        1.AsTask().Some().Equals(2.AsTask().Some()).ItIs(false);
 
         None<int>().Equals(None<int>()).ItIs(true);
-        None<int>().Equals(task1.Some()).ItIs(false);
+        None<int>().Equals(1.AsTask().Some()).ItIs(false);
     }
 
     [Test(Description = "Tests ==")]
     public void TestsEqOperator()
     {
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        (task1.Some() == task1.Some()).ItIs(true);
-        (task1.Some() == task2.Some()).ItIs(false);
+        (1.AsTask().Some() == 1.AsTask().Some()).ItIs(true);
+        (1.AsTask().Some() == 2.AsTask().Some()).ItIs(false);
 
         (None<int>() == None<int>()).ItIs(true);
-        (None<int>() == task1.Some()).ItIs(false);
+        (None<int>() == 1.AsTask().Some()).ItIs(false);
     }
 
     [Test(Description = "Tests !=")]
     public void TestsInEqOperator()
     {
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        (task1.Some() != task1.Some()).ItIs(false);
-        (task1.Some() != task2.Some()).ItIs(true);
+        (1.AsTask().Some() != 1.AsTask().Some()).ItIs(false);
+        (1.AsTask().Some() != 2.AsTask().Some()).ItIs(true);
 
         (None<int>() != None<int>()).ItIs(false);
-        (None<int>() != task1.Some()).ItIs(true);
+        (None<int>() != 1.AsTask().Some()).ItIs(true);
     }
 
     [Test(Description = "Tests Await")]
     public async Task TestsAwaitAsync()
     {
-        var task1 = Task.FromResult(1);
-
-        var asyncOption1 = AsyncOption.Some(task1);
+        var asyncOption1 = AsyncOption.Some(1.AsTask());
         (await asyncOption1).IsSome(1);
 
         var asyncOptionNone = None<int>();
@@ -62,12 +51,9 @@ public partial class AsyncOptionTests
     [Test(Description = "Tests Match")]
     public void TestsMatch()
     {
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        task1.Some()
-            .Match(task => task, () => task2).ItIs(task1);
+        1.AsTask().Some()
+            .Match(task => task, () => 2.AsTask()).ItIs(1.AsTask());
         None<int>()
-            .Match(task => task, () => task2).ItIs(task2);
+            .Match(task => task, () => 2.AsTask()).ItIs(2.AsTask());
     }
 }

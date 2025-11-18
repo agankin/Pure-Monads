@@ -16,7 +16,7 @@ public static partial class AsyncOptionExtensions
     {
         return asyncOption.Match(
             mapSome: task => task,
-            onNone: () => Task.FromResult(alternativeValue));
+            onNone: () => alternativeValue.AsTask());
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public static partial class AsyncOptionExtensions
     {
         return asyncOption.Match(
             mapSome: task => task,
-            onNone: () => Task.FromResult(getAlternativeValue()));
+            onNone: () => getAlternativeValue().AsTask());
     }
 
     /// <summary>
@@ -88,7 +88,9 @@ public static partial class AsyncOptionExtensions
     /// <returns>
     /// The original async option or an async option returned from <paramref name="getAlternativeOption"/>.
     /// </returns>
-    public static AsyncOption<TValue> Or<TValue>(this in AsyncOption<TValue> asyncOption, Func<AsyncOption<TValue>> getAlternativeOption)
+    public static AsyncOption<TValue> Or<TValue>(
+        this in AsyncOption<TValue> asyncOption,
+        Func<AsyncOption<TValue>> getAlternativeOption)
     {
         return asyncOption.Match(
             mapSome: task => task,

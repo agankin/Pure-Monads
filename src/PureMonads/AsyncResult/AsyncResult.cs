@@ -52,7 +52,7 @@ public readonly struct AsyncResult<TValue, TError> : IEquatable<AsyncResult<TVal
     {
         return HasValue
             ? _task.Map(Result<TValue, TError>.Value).GetAwaiter()
-            : Task.FromResult(Result.Error<TValue, TError>(_error)).GetAwaiter();
+            : Result.Error<TValue, TError>(_error).AsTask().GetAwaiter();
     }
 
     /// <summary>

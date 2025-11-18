@@ -10,14 +10,12 @@ public partial class AsyncResultTests
     [Test(Description = "Tests to AsyncOption")]
     public async Task TestsToAsyncOption()
     {
-        var task1 = Task.FromResult(1);
-
         (
-            await Value<int, string>(task1).AsyncValue()
+            await Value<int, string>(1.AsTask()).AsyncValue()
         ).IsSome(1);
 
         (
-            await Value<int, string>(task1).Error()
+            await Value<int, string>(1.AsTask()).Error()
         ).IsNone();
 
         (

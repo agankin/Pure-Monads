@@ -10,7 +10,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests Map")]
     public async Task TestsMapAsync()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
 
         await AsyncValue(1)
             .Map(value => $"value: {value}").IsValueAsync("value: 1");

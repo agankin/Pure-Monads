@@ -19,15 +19,13 @@ public partial class ResultTests
     [Test(Description = "Tests MapAsync")]
     public async Task TestsMapAsync()
     {
-        Task<string> AsyncValue(string value) => Task.FromResult(value);
-
         (
             await Value<int, string>(1)
-                .MapAsync(value => AsyncValue($"value: {value}"))
+                .MapAsync(value => $"value: {value}".AsTask())
         ).IsValue("value: 1");
         (
             await Error<int, string>("err!")
-                .MapAsync(value => AsyncValue($"value: {value}"))
+                .MapAsync(value => $"value: {value}".AsTask())
         ).IsError("err!");
     }
 }

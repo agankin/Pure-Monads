@@ -26,18 +26,17 @@ public static class EitherSamples
         var flatMapRight2 = right4.FlatMapRight(right => Right<int, string>($"Right: {right}")); // == Right("Right: 4")
 
         // Supports left and right Map/FlatMap with async mappers:
-        Task<TValue> Async<TValue>(TValue value) => Task.FromResult(value);
 
-        var mapLeft1Async = await left1.MapLeftAsync(left => Async(left + 10));             // == Left(11)
-        var mapRight1Async = await left1.MapRightAsync(right => Async($"Right: {right}"));  // == Still Left(1)
-        var mapRight2Async = await right4.MapRightAsync(right => Async($"Right: {right}")); // == Right("Right: 4")
+        var mapLeft1Async = await left1.MapLeftAsync(left => (left + 10).AsTask());           // == Left(11)
+        var mapRight1Async = await left1.MapRightAsync(right => $"Right: {right}".AsTask());  // == Still Left(1)
+        var mapRight2Async = await right4.MapRightAsync(right => $"Right: {right}".AsTask()); // == Right("Right: 4")
         
         var flatMapLeft1Async = await left1.FlatMapLeftAsync(                               // == Left(11)
-            left => Async(Left<int, string>(left + 10)));
+            left => Left<int, string>(left + 10).AsTask());
         var flatMapRight1Async = await left1.FlatMapLeftAsync(                              // == Right("Right: 1")
-            _ => Async(Right<int, string>($"Right: 1")));
+            _ => Right<int, string>($"Right: 1").AsTask());
         var flatMapRight2Async = await right4.FlatMapRightAsync(                            // == Right("Right: 4")
-            right => Async(Right<int, string>($"Right: {right}")));
+            right => Right<int, string>($"Right: {right}").AsTask());
 
         // Matching by invoking corresponding function:
         var matchResult = left1.Match(                      // == "Left: 1"

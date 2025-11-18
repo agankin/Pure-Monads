@@ -20,7 +20,7 @@ public static partial class AsyncResultExtensions
     {
         return result.Match(
             task => task.Map(map),
-            error => Task.FromResult(AsyncResult<TResult, TError>.Error(error)));
+            error => AsyncResult<TResult, TError>.Error(error).AsTask());
     }
 
     /// <summary>
@@ -37,6 +37,6 @@ public static partial class AsyncResultExtensions
     {
         return result.Match(
             task => task.Map(map),
-            error => Task.FromResult(AsyncResult<TResult>.Error(error)));
+            error => AsyncResult<TResult>.Error(error).AsTask());
     }
 }

@@ -12,8 +12,10 @@ public static partial class OptionExtensions
     /// <param name="option">The option.</param>
     /// <param name="alternativeValue">An alternative value.</param>
     /// <returns>A value extracted from Some or <paramref name="alternativeValue"/>.</returns>
-    public static TValue Or<TValue>(this in Option<TValue> option, TValue alternativeValue) =>
-        option.Match(value => value, () => alternativeValue);
+    public static TValue Or<TValue>(this in Option<TValue> option, TValue alternativeValue)
+    {
+        return option.Match(value => value, () => alternativeValue);
+    }
 
     /// <summary>
     /// Returns a value extracted from Some or returned from <paramref name="getAlternativeValue"/>.
@@ -24,8 +26,10 @@ public static partial class OptionExtensions
     /// <returns>
     /// A value extracted from Some or returned from <paramref name="getAlternativeValue"/>.
     /// </returns>
-    public static TValue Or<TValue>(this in Option<TValue> option, Func<TValue> getAlternativeValue) =>
-        option.Match(value => value, getAlternativeValue);
+    public static TValue Or<TValue>(this in Option<TValue> option, Func<TValue> getAlternativeValue)
+    {
+        return option.Match(value => value, getAlternativeValue);
+    }
 
     /// <summary>
     /// Returns the original option if it is Some or <paramref name="alternativeOption"/>.
@@ -34,8 +38,10 @@ public static partial class OptionExtensions
     /// <param name="option">The option.</param>
     /// <param name="alternativeOption">An alternative option.</param>
     /// <returns>The original option or <paramref name="alternativeOption"/>.</returns>
-    public static Option<TValue> Or<TValue>(this in Option<TValue> option, Option<TValue> alternativeOption) =>
-        option.Match(value => value, () => alternativeOption);
+    public static Option<TValue> Or<TValue>(this in Option<TValue> option, Option<TValue> alternativeOption)
+    {
+        return option.Match(value => value, () => alternativeOption);
+    }
 
     /// <summary>
     /// Returns the original option if it is Some or an option returned from <paramref name="getAlternativeOption"/>.
@@ -46,6 +52,8 @@ public static partial class OptionExtensions
     /// <returns>
     /// The original option or an option returned from <paramref name="getAlternativeOption"/>.
     /// </returns>
-    public static Option<TValue> Or<TValue>(this in Option<TValue> option, Func<Option<TValue>> getAlternativeOption) =>
-        option.Match(value => value, getAlternativeOption);
+    public static Option<TValue> Or<TValue>(this in Option<TValue> option, Func<Option<TValue>> getAlternativeOption)
+    {
+        return option.Match(value => value, getAlternativeOption);
+    }
 }

@@ -10,21 +10,18 @@ public partial class AsyncResultTests
     [Test(Description = "Tests FlatMapAsync")]
     public async Task TestsFlatMapAsync()
     {
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
         await (
-            await Value<int, string>(task1)
-                .FlatMapAsync(value => Value<int, string>(task2))
+            await Value<int, string>(1.AsTask())
+                .FlatMapAsync(value => Value<int, string>(2.AsTask()))
         ).IsValueAsync(2);
         (
-            await Value<int, string>(task1)
+            await Value<int, string>(1.AsTask())
                 .FlatMapAsync(_ => Error<int, string>("err!"))
         ).IsError("err!");
 
         (
             await Error<int, string>("err!")
-                .FlatMapAsync(value => Value<int, string>(task2))
+                .FlatMapAsync(value => Value<int, string>(2.AsTask()))
         ).IsError("err!");
         (
             await Error<int, string>("err!")

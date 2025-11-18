@@ -36,6 +36,7 @@ public static partial class PipeMapExtensions
         Func<TSource, Task<TResult>> transformAsync)
     {
         var result = await transformAsync(source);
+        
         return new PipeMapResult<TSource, TResult>(source, result);
     }
 
@@ -55,6 +56,7 @@ public static partial class PipeMapExtensions
         Func<TSource, TResult> transform)
     {
         var source = await sourceAsync;
+        
         return new PipeMapResult<TSource, TResult>(source, transform(source));
     }
 

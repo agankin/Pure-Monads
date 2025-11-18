@@ -14,16 +14,13 @@ public partial class AsyncResultTests
         var Value = Value<int, string>;
         var Error = Error<int, string>;
 
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        Value(task1).Equals(Value(task1)).ItIs(true);
-        Value(task1).Equals(Value(task2)).ItIs(false);
+        Value(1.AsTask()).Equals(Value(1.AsTask())).ItIs(true);
+        Value(1.AsTask()).Equals(Value(2.AsTask())).ItIs(false);
 
         Error("err1").Equals(Error("err1")).ItIs(true);
         Error("err1").Equals(Error("err2")).ItIs(false);
 
-        Value(task1).Equals(Error("err1")).ItIs(false);
+        Value(1.AsTask()).Equals(Error("err1")).ItIs(false);
     }
 
     [Test(Description = "Tests ==")]
@@ -32,16 +29,13 @@ public partial class AsyncResultTests
         var Value = Value<int, string>;
         var Error = Error<int, string>;
 
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        (Value(task1) == Value(task1)).ItIs(true);
-        (Value(task1) == Value(task2)).ItIs(false);
+        (Value(1.AsTask()) == Value(1.AsTask())).ItIs(true);
+        (Value(1.AsTask()) == Value(2.AsTask())).ItIs(false);
 
         (Error("err1") == Error("err1")).ItIs(true);
         (Error("err1") == Error("err2")).ItIs(false);
 
-        (Value(task1) == Error("err1")).ItIs(false);
+        (Value(1.AsTask()) == Error("err1")).ItIs(false);
     }
 
     [Test(Description = "Tests !=")]
@@ -50,35 +44,30 @@ public partial class AsyncResultTests
         var Value = Value<int, string>;
         var Error = Error<int, string>;
 
-        var task1 = Task.FromResult(1);
-        var task2 = Task.FromResult(2);
-
-        (Value(task1) != Value(task1)).ItIs(false);
-        (Value(task1) != Value(task2)).ItIs(true);
+        (Value(1.AsTask()) != Value(1.AsTask())).ItIs(false);
+        (Value(1.AsTask()) != Value(2.AsTask())).ItIs(true);
 
         (Error("err1") != Error("err1")).ItIs(false);
         (Error("err1") != Error("err2")).ItIs(true);
 
-        (Value(task1) != Error("err1")).ItIs(true);
+        (Value(1.AsTask()) != Error("err1")).ItIs(true);
     }
 
     [Test(Description = "Tests Match")]
     public async Task TestsMatch()
     {
-        var task1 = Task.FromResult(1);
-
         (
-            await Value<int, string>(task1)
+            await Value<int, string>(1.AsTask())
                 .Match(
                     async task => $"value: {await task}",
-                    error => Task.FromResult($"error: {error}"))
+                    error => $"error: {error}".AsTask())
         ).ItIs("value: 1");
 
         (
             await Error<int, string>("err!")
                 .Match(
                     async task => $"value: {await task}",
-                    error => Task.FromResult($"error: {error}"))
+                    error => $"error: {error}".AsTask())
         ).ItIs("error: err!");
     }
 }

@@ -16,6 +16,7 @@ public static partial class PipeMapExtensions
         Func<TSource, TResult, TResult2> reduce)
     {
         var (source, result) = pipeMapResult;
+        
         return reduce(source, result);
     }
 
@@ -33,6 +34,7 @@ public static partial class PipeMapExtensions
         Func<TSource, TResult, Task<TResult2>> reduceAsync)
     {
         var (source, result) = pipeMapResult;
+        
         return reduceAsync(source, result);
     }
 
@@ -50,6 +52,7 @@ public static partial class PipeMapExtensions
         Func<TSource, TResult, TResult2> reduce)
     {
         var (source, result) = await pipeMapResultAsync;
+        
         return reduce(source, result);
     }
 
@@ -67,6 +70,7 @@ public static partial class PipeMapExtensions
         Func<TSource, TResult, Task<TResult2>> reduceAsync)
     {
         var (source, result) = await pipeMapResultAsync;
+        
         return await reduceAsync(source, result);
     }
 }

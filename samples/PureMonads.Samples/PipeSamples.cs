@@ -16,9 +16,9 @@ public static class PipeSamples
             .Pipe(Add5);
 
         // Async functions used in examples
-        async Task<int> Mul2Async(int x) => await Task.FromResult(x * 2);
-        async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
-        async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
+        Task<int> Mul2Async(int x) => (x * 2).AsTask();
+        Task<int> Subtract2Async(int x) => (x - 2).AsTask();
+        Task<int> QubeAsync(int x) => (x * x * x).AsTask();
 
         // Chaining async and sync functions:
         var result2 = await 1                     // == 125

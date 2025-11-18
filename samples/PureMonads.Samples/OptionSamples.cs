@@ -19,13 +19,12 @@ public static class OptionSamples
         var flatMapResult = some2.FlatMap(value => (value + 10).Some());    // == Some(12)
 
         // Standard monad operations supporting async mappers:
-        var mapAsyncResult = some1.MapAsync(value => Task.FromResult(value + 10));     // == AsyncOption Some(11)
+        var mapAsyncResult = some1.MapAsync(value => (value + 10).AsTask());     // == AsyncOption Some(11)
 
-        AsyncOption<int> AsyncSome(int value) => AsyncOption.Some(Task.FromResult(value));
+        AsyncOption<int> AsyncSome(int value) => AsyncOption.Some(value.AsTask());
         var flatMapAsyncResult = some2.FlatMap(value => AsyncSome(value + 10));        // == AsyncOption Some(12)
 
-        Task<Option<int>> Async(int value) => Task.FromResult(value.Some());
-        var flatMapResult2 = await some2.FlatMapAsync(value => Async(value + 10));     // == Some(12)
+        var flatMapResult2 = await some2.FlatMapAsync(value => (value + 10).Some().AsTask()); // == Some(12)
 
         // Matching by invoking corresponding function:
         var matchResult = none1.Match(value => $"Some {value}!", () => "None!");   // == "None!"

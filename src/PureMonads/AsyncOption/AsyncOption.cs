@@ -37,7 +37,7 @@ public readonly struct AsyncOption<TValue> : IEquatable<AsyncOption<TValue>>
     {
         return HasValue
             ? _task.Map(Option.Some).GetAwaiter()
-            : Task.FromResult(Option.None<TValue>()).GetAwaiter();
+            : Option.None<TValue>().AsTask().GetAwaiter();
     }
 
     /// <summary>

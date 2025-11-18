@@ -23,7 +23,9 @@ public partial class OptionTests
     [Test(Description = "Tests ValueOrFailure (custom exception)")]
     public void TestsValueOrFailureCustom()
     {
-        "value1".Some().ValueOrFailure(() => new InvalidOperationException()).ItIs("value1");
+        "value1".Some()
+            .ValueOrFailure(() => new InvalidOperationException())
+            .ItIs("value1");
 
         var exception = Assert.Throws<InvalidOperationException>(() =>
         {

@@ -8,6 +8,7 @@ public static class AsyncOptionAssertions
     public static async Task IsSomeAsync<TValue>(this AsyncOption<TValue> option, TValue expectedValue)
     {
         Assert.That(option.HasValue, Is.EqualTo(true));
+        
         await option.Match(
             async asyncValue => (await asyncValue).ItIs(expectedValue),
             () =>

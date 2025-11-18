@@ -11,8 +11,7 @@ public partial class AsyncOptionTests
     [Test(Description = "Tests ValueOrFailureAsync")]
     public async Task TestsValueOrFailureAsync()
     {
-        var task1 = Task.FromResult(1);
-        (await task1.Some().ValueOrFailureAsync()).ItIs(1);
+        (await 1.AsTask().Some().ValueOrFailureAsync()).ItIs(1);
 
         var exception = Assert.ThrowsAsync<Exception>(() =>
         {
@@ -25,12 +24,12 @@ public partial class AsyncOptionTests
     [Test(Description = "Tests AsResultAsync")]
     public async Task TestsAsResultAsync()
     {
-        var task1 = Task.FromResult(1);
-        var result1 = await task1.Some().AsResultAsync();
+        var result1 = await 1.AsTask().Some().AsResultAsync();
         result1.IsValue(Option.Some(1));
 
         var testException = new TestException("Exception!");
-        var taskErr = Task.FromException<int>(testException);
+        var taskErr = testException.AsTaskException<int>();
+        
         var errResult = await taskErr.Some().AsResultAsync();
         errResult.IsError(testException);
     }

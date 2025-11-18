@@ -24,7 +24,7 @@ public partial class OptionTests
     [Test(Description = "Tests FlatMap (to AsyncOption)")]
     public async Task TestsFlatMapToAsyncOption()
     {
-        AsyncOption<string> AsyncSome(string value) => AsyncOption.Some(Task.FromResult(value));
+        AsyncOption<string> AsyncSome(string value) => AsyncOption.Some(value.AsTask());
         AsyncOption<string> AsyncNone() => AsyncOption.None<string>();
 
         await "value".Some()
@@ -41,8 +41,8 @@ public partial class OptionTests
     [Test(Description = "Tests FlatMapAsync")]
     public async Task TestsFlatMapAsync()
     {
-        Task<Option<string>> AsyncSome(string value) => Task.FromResult(Option.Some(value));
-        Task<Option<string>> AsyncNone() => Task.FromResult(None<string>());
+        Task<Option<string>> AsyncSome(string value) => Option.Some(value).AsTask();
+        Task<Option<string>> AsyncNone() => None<string>().AsTask();
 
         (
             await "value".Some()

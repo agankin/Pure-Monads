@@ -16,9 +16,12 @@ public static partial class EitherExtensions
     /// <param name="onLeft">A delegate invoked on Left.</param>
     /// <param name="onRight">A delegate invoked on Right.</param>
     /// <returns>The same Either monad.</returns>
-    public static Either<TLeft, TRight> On<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TLeft> onLeft, Action<TRight> onRight)
+    public static Either<TLeft, TRight> On<TLeft, TRight>(
+        this in Either<TLeft, TRight> either,
+        Action<TLeft> onLeft, Action<TRight> onRight)
     {
         either.Match(onLeft.AsFunc(), onRight.AsFunc());
+        
         return either;
     }
 
@@ -31,9 +34,12 @@ public static partial class EitherExtensions
     /// <param name="onLeftAsync">A delegate invoked on Left.</param>
     /// <param name="onRight">A delegate invoked on Right.</param>
     /// <returns>The same Either monad.</returns>
-    public static async Task<Either<TLeft, TRight>> OnAsync<TLeft, TRight>(this Either<TLeft, TRight> either, Func<TLeft, Task> onLeftAsync, Action<TRight> onRight)
+    public static async Task<Either<TLeft, TRight>> OnAsync<TLeft, TRight>(
+        this Either<TLeft, TRight> either,
+        Func<TLeft, Task> onLeftAsync, Action<TRight> onRight)
     {
         await either.Match(onLeftAsync, onRight.AsAsyncFunc());
+        
         return either;
     }
 
@@ -46,9 +52,12 @@ public static partial class EitherExtensions
     /// <param name="onLeft">A delegate invoked on Left.</param>
     /// <param name="onRightAsync">A delegate invoked on Right.</param>
     /// <returns>The same Either monad.</returns>
-    public static async Task<Either<TLeft, TRight>> OnAsync<TLeft, TRight>(this Either<TLeft, TRight> either, Action<TLeft> onLeft, Func<TRight, Task> onRightAsync)
+    public static async Task<Either<TLeft, TRight>> OnAsync<TLeft, TRight>(
+        this Either<TLeft, TRight> either,
+        Action<TLeft> onLeft, Func<TRight, Task> onRightAsync)
     {
         await either.Match(onLeft.AsAsyncFunc(), onRightAsync);
+        
         return either;
     }
 
@@ -67,6 +76,7 @@ public static partial class EitherExtensions
         Func<TRight, Task> onRightAsync)
     {
         await either.Match(onLeftAsync, onRightAsync);
+        
         return either;
     }
 
@@ -81,6 +91,7 @@ public static partial class EitherExtensions
     public static Either<TLeft, TRight> OnLeft<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TLeft> onLeft)
     {
         either.Match(onLeft.AsFunc(), _ => new());
+        
         return either;
     }
 
@@ -92,9 +103,12 @@ public static partial class EitherExtensions
     /// <param name="either">The Either.</param>
     /// <param name="onLeftAsync">A delegate.</param>
     /// <returns>The same Either monad.</returns>
-    public static async Task<Either<TLeft, TRight>> OnLeftAsync<TLeft, TRight>(this Either<TLeft, TRight> either, Func<TLeft, Task> onLeftAsync)
+    public static async Task<Either<TLeft, TRight>> OnLeftAsync<TLeft, TRight>(
+        this Either<TLeft, TRight> either,
+        Func<TLeft, Task> onLeftAsync)
     {
         await either.Match(onLeftAsync, _ => Task.CompletedTask);
+        
         return either;
     }
 
@@ -109,6 +123,7 @@ public static partial class EitherExtensions
     public static Either<TLeft, TRight> OnRight<TLeft, TRight>(this in Either<TLeft, TRight> either, Action<TRight> onRight)
     {
         either.Match(_ => new(), onRight.AsFunc());
+        
         return either;
     }
 
@@ -120,9 +135,12 @@ public static partial class EitherExtensions
     /// <param name="either">The Either.</param>
     /// <param name="onRightAsync">A delegate.</param>
     /// <returns>The same Either monad.</returns>
-    public static async Task<Either<TLeft, TRight>> OnRightAsync<TLeft, TRight>(this Either<TLeft, TRight> either, Func<TRight, Task> onRightAsync)
+    public static async Task<Either<TLeft, TRight>> OnRightAsync<TLeft, TRight>(
+        this Either<TLeft, TRight> either,
+        Func<TRight, Task> onRightAsync)
     {
         await either.Match(_ => Task.CompletedTask, onRightAsync);
+        
         return either;
     }
 }

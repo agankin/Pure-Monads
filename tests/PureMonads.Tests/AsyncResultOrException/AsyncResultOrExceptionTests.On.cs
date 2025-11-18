@@ -13,7 +13,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests OnAsync.")]
     public async Task TestsOnAsync()
     {
-        AsyncResult<string> AsyncValue(string val) => Value(Task.FromResult(val));
+        AsyncResult<string> AsyncValue(string val) => Value(val.AsTask());
         var onResults = new List<string>();
 
         await AsyncValue("value")
@@ -33,7 +33,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests OnValueAsync.")]
     public async Task TestsOnValueAsync()
     {
-        AsyncResult<string> AsyncValue(string val) => Value(Task.FromResult(val));
+        AsyncResult<string> AsyncValue(string val) => Value(val.AsTask());
         var onValueResults = new List<string>();
 
         await AsyncValue("value")
@@ -47,7 +47,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests OnError.")]
     public void TestsOnError()
     {
-        AsyncResult<string> AsyncValue(string val) => Value(Task.FromResult(val));
+        AsyncResult<string> AsyncValue(string val) => Value(val.AsTask());
         var onErrorResults = new List<string>();
 
         AsyncValue("value")

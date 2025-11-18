@@ -48,7 +48,9 @@ public static partial class AsyncOptionExtensions
     /// <param name="onSomeAsync">A delegate invoked on Some.</param>
     /// <param name="onNoneAsync">A delegate invoked on None.</param>
     /// <returns>A task.</returns>
-    public static async Task OnAsync<TValue>(this AsyncOption<TValue> asyncOption, Func<TValue, Task> onSomeAsync, Func<Task> onNoneAsync)
+    public static async Task OnAsync<TValue>(
+        this AsyncOption<TValue> asyncOption,
+        Func<TValue, Task> onSomeAsync, Func<Task> onNoneAsync)
     {
         await asyncOption.Match(task => task.Map(onSomeAsync), onNoneAsync);
     }

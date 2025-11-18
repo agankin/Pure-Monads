@@ -24,24 +24,22 @@ public partial class EitherTests
     [Test(Description = "Tests MapAsync")]
     public async Task TestsMapAsync()
     {
-        Task<string> AsyncValue(string value) => Task.FromResult(value);
-
         (
             await Left<int, string>(1)
-                .MapLeftAsync(left => AsyncValue($"Left: {left}"))
+                .MapLeftAsync(left => $"Left: {left}".AsTask())
         ).IsLeft("Left: 1");
         (
             await Left<int, string>(1)
-                .MapRightAsync(right => AsyncValue($"Right: {right}"))
+                .MapRightAsync(right => $"Right: {right}".AsTask())
         ).IsLeft(1);
         
         (
             await Right<int, string>("2")
-                .MapRightAsync(right => AsyncValue($"Right: {right}"))
+                .MapRightAsync(right => $"Right: {right}".AsTask())
         ).IsRight("Right: 2");
         (
             await Right<int, string>("2")
-                .MapLeftAsync(left => AsyncValue($"Left: {left}"))
+                .MapLeftAsync(left => $"Left: {left}".AsTask())
         ).IsRight("2");
     }
 }

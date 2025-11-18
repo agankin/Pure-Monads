@@ -10,7 +10,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests FlatMap")]
     public async Task TestsFlatMapAsync()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
 
         await (
             await AsyncValue(1)

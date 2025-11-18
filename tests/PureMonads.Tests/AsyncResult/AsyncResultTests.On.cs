@@ -14,9 +14,7 @@ public partial class AsyncResultTests
     {
         var onResults = new List<string>();
 
-        var strTask = Task.FromResult("value");
-
-        await Value<string, int>(strTask)
+        await Value<string, int>("value".AsTask())
             .OnAsync(
                 _ => onResults.Add("On 1 invokes onValue"),
                 _ => onResults.Add("On 1 invokes onError"));
@@ -33,9 +31,7 @@ public partial class AsyncResultTests
     {
         var onValueResults = new List<string>();
 
-        var strTask = Task.FromResult("value");
-
-        await Value<string, int>(strTask)
+        await Value<string, int>("value".AsTask())
             .OnValueAsync(_ => onValueResults.Add("OnValue 1 invokes onValue"));
         await Error<string, int>(1)
             .OnValueAsync(_ => onValueResults.Add("OnValue 2 invokes onValue"));
@@ -48,9 +44,7 @@ public partial class AsyncResultTests
     {
         var onErrorResults = new List<string>();
 
-        var strTask = Task.FromResult("value");
-
-        Value<string, int>(strTask)
+        Value<string, int>("value".AsTask())
             .OnError(_ => onErrorResults.Add("OnError 1 invokes onError"));
         Error<string, int>(1)
             .OnError(_ => onErrorResults.Add("OnError 2 invokes onError"));

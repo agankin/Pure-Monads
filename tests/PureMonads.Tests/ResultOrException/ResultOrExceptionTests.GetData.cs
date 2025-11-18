@@ -25,11 +25,12 @@ public partial class ResultOrExceptionTests
     [Test(Description = "Tests AsResultAsync")]
     public async Task TestsAsResultAsync()
     {
-        var result1 = await Task.FromResult(1).AsResultAsync();
+        var result1 = await 1.AsTask().AsResultAsync();
         result1.IsValue(1);
 
         var testException = new TestException("Exception!");
-        var resultEx = await Task.FromException<int>(testException).AsResultAsync();
+        var resultEx = await testException.AsTaskException<int>().AsResultAsync();
+        
         resultEx.IsError(testException);
     }
 }

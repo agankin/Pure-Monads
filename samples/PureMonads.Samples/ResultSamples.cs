@@ -21,11 +21,11 @@ public static class ResultSamples
 
         // Standard monad operations supporting async mappers:
         var mapAsyncResult = await value1.MapAsync(                                   // == Value(11)
-            value => Task.FromResult(value + 10));
+            value => (value + 10).AsTask());
         var flatMapAsyncResult = await value2.FlatMapAsync(                           // == Value(12)
-            value => Task.FromResult(Value<int, string>(value + 10)));
+            value => Value<int, string>(value + 10).AsTask());
 
-        AsyncResult<int, string> AsyncValue(int value) => AsyncResult<int, string>.Value(Task.FromResult(value));
+        AsyncResult<int, string> AsyncValue(int value) => AsyncResult<int, string>.Value(value.AsTask());
         var flatMapResult2 = value2.FlatMap(value => AsyncValue(value + 10));         // == AsyncValue(12)
 
         // Matching by invoking corresponding function:
@@ -97,8 +97,9 @@ public static class ResultSamples
         });
         
         // Awaiting with wrapping value or exception into an instance of Result monad:
-        var asyncValue = Task.FromResult(1);
-        var asyncError = Task.FromException<int>(new Exception());
+        var asyncValue = 1.AsTask();
+        var asyncError = new Exception().AsTaskException<int>();
+        
         Result<int> valueResult = await asyncValue.AsResultAsync();     // Value(1)
         Result<int> error = await asyncError.AsResultAsync();           // Error(Exception)
     }

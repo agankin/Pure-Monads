@@ -7,6 +7,7 @@ internal static class TaskExtensions
         var taskScheduler = SynchronizationContext.Current != null
             ? TaskScheduler.FromCurrentSynchronizationContext()
             : TaskScheduler.Default;
+        
         return task.ContinueWith(task => map(task.Result), taskScheduler);
     }
 
@@ -16,4 +17,6 @@ internal static class TaskExtensions
     }
 
     public static Task<TValue> AsTask<TValue>(this TValue value) => Task.FromResult(value);
+
+    public static Task<TValue> AsTaskException<TValue>(this Exception ex) => Task.FromException<TValue>(ex);
 }

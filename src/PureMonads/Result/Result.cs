@@ -50,8 +50,10 @@ public readonly struct Result<TValue, TError> : IEquatable<Result<TValue, TError
     /// <param name="mapValue">A delegate invoked on Value.</param>
     /// <param name="mapError">A delegate invoked on Error.</param>
     /// <returns>A result returned from the matched delegate invocation.</returns>
-    public TResult Match<TResult>(Func<TValue, TResult> mapValue, Func<TError, TResult> mapError) =>
-        HasValue ? mapValue(_value) : mapError(_error);
+    public TResult Match<TResult>(Func<TValue, TResult> mapValue, Func<TError, TResult> mapError)
+    {
+        return HasValue ? mapValue(_value) : mapError(_error);
+    }
 
     /// <inheritdoc/>
     public override string ToString() => Match(value => $"Value({value})", error => $"Error({error})");

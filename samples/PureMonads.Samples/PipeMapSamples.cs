@@ -17,9 +17,9 @@ public static class PipeMapSamples
             .Reduce((source, result) => $"x = {source}, (x * x / 2) + 5 = {result}");
 
         // Async functions used in examples
-        async Task<int> Mul2Async(int x) => await Task.FromResult(x * 2);
-        async Task<int> Subtract2Async(int x) => await Task.FromResult(x - 2);
-        async Task<int> QubeAsync(int x) => await Task.FromResult(x * x * x);
+        async Task<int> Mul2Async(int x) => await (x * 2).AsTask();
+        async Task<int> Subtract2Async(int x) => await (x - 2).AsTask();
+        async Task<int> QubeAsync(int x) => await (x * x * x).AsTask();
 
         // Chaining async functions:
         var result2 = await 1                     // == "x = 1, (((x + 5) * 2 - 2) / 2 ) ^ 3 = 125"

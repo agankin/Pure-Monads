@@ -28,7 +28,9 @@ public static partial class AsyncOptionExtensions
     /// <param name="asyncOption">The async option.</param>
     /// <param name="asyncMap">A mapping delegate.</param>
     /// <returns>An instance of AsyncOption monad.</returns>
-    public static AsyncOption<TResult> Map<TValue, TResult>(this in AsyncOption<TValue> asyncOption, Func<TValue, Task<TResult>> asyncMap)
+    public static AsyncOption<TResult> Map<TValue, TResult>(
+        this in AsyncOption<TValue> asyncOption,
+        Func<TValue, Task<TResult>> asyncMap)
     {
         return asyncOption.Match(
             mapSome: task => AsyncOption.Some(task.Map(asyncMap)),

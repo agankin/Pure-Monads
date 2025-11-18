@@ -23,6 +23,7 @@ public partial class ResultOrExceptionTests
             await Task.CompletedTask;
             return 1;
         })).IsValue(1);
+
         (await FromAsync(new Func<Task<int>>(async () => 
         {
             await Task.CompletedTask;

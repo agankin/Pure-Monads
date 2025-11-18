@@ -13,9 +13,8 @@ public partial class AsyncOptionTests
     public async Task TestsOnAsync1()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
-        await valueTask.Some().OnAsync(
+        await "value".AsTask().Some().OnAsync(
             _ => results.Add("OnAsync 1 invokes onSome"),
             () => results.Add("OnAsync 1 invokes onNone"));
         await None<string>().OnAsync(
@@ -29,7 +28,6 @@ public partial class AsyncOptionTests
     public async Task TestsOnAsync2()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
         Task AddToResults(string value)
         {
@@ -37,7 +35,7 @@ public partial class AsyncOptionTests
             return Task.CompletedTask;
         }
 
-        await valueTask.Some().OnAsync(
+        await "value".AsTask().Some().OnAsync(
             _ => AddToResults("OnAsync 1 invokes onSome"),
             () => results.Add("OnAsync 1 invokes onNone"));
         await None<string>().OnAsync(
@@ -51,7 +49,6 @@ public partial class AsyncOptionTests
     public async Task TestsOnAsync3()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
         Task AddToResults(string value)
         {
@@ -59,7 +56,7 @@ public partial class AsyncOptionTests
             return Task.CompletedTask;
         }
 
-        await valueTask.Some().OnAsync(
+        await "value".AsTask().Some().OnAsync(
             _ => results.Add("OnAsync 1 invokes onSome"),
             () => AddToResults("OnAsync 1 invokes onNone"));
         await None<string>().OnAsync(
@@ -73,7 +70,6 @@ public partial class AsyncOptionTests
     public async Task TestsOnAsync4()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
         Task AddToResults(string value)
         {
@@ -81,7 +77,7 @@ public partial class AsyncOptionTests
             return Task.CompletedTask;
         }
 
-        await valueTask.Some().OnAsync(
+        await "value".AsTask().Some().OnAsync(
             _ => AddToResults("OnAsync 1 invokes onSome"),
             () => AddToResults("OnAsync 1 invokes onNone"));
         await None<string>().OnAsync(
@@ -95,10 +91,11 @@ public partial class AsyncOptionTests
     public async Task TestsOnSomeAsync1()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
-        await valueTask.Some().OnSomeAsync(_ => results.Add("OnSomeAsync 1 invokes onSome"));
-        await None<string>().OnSomeAsync(_ => results.Add("OnSomeAsync 2 invokes onSome"));
+        await "value".AsTask().Some()
+            .OnSomeAsync(_ => results.Add("OnSomeAsync 1 invokes onSome"));
+        await None<string>()
+            .OnSomeAsync(_ => results.Add("OnSomeAsync 2 invokes onSome"));
 
         results.SequenceEqual(["OnSomeAsync 1 invokes onSome"]).ItIs(true);
     }
@@ -107,7 +104,6 @@ public partial class AsyncOptionTests
     public async Task TestsOnSomeAsync2()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
         Task AddToResults(string value)
         {
@@ -115,8 +111,10 @@ public partial class AsyncOptionTests
             return Task.CompletedTask;
         }
 
-        await valueTask.Some().OnSomeAsync(_ => AddToResults("OnSomeAsync 1 invokes onSome"));
-        await None<string>().OnSomeAsync(_ => AddToResults("OnSomeAsync 2 invokes onSome"));
+        await "value".AsTask().Some()
+            .OnSomeAsync(_ => AddToResults("OnSomeAsync 1 invokes onSome"));
+        await None<string>()
+            .OnSomeAsync(_ => AddToResults("OnSomeAsync 2 invokes onSome"));
 
         results.SequenceEqual(["OnSomeAsync 1 invokes onSome"]).ItIs(true);
     }
@@ -125,10 +123,11 @@ public partial class AsyncOptionTests
     public async Task TestsOnNoneAsync1()
     {
         var results = new List<string>();
-        var valueTask = Task.FromResult("value");
 
-        await valueTask.Some().OnNoneAsync(() => results.Add("OnNoneAsync 1 invokes onNone"));
-        await None<string>().OnNoneAsync(() => results.Add("OnNoneAsync 2 invokes onNone"));
+        await "value".AsTask().Some()
+            .OnNoneAsync(() => results.Add("OnNoneAsync 1 invokes onNone"));
+        await None<string>()
+            .OnNoneAsync(() => results.Add("OnNoneAsync 2 invokes onNone"));
 
         results.SequenceEqual(["OnNoneAsync 2 invokes onNone"]).ItIs(true);
     }
@@ -137,7 +136,6 @@ public partial class AsyncOptionTests
     public async Task TestsOnNoneAsync2()
     {
         var onNoneResults = new List<string>();
-        var valueTask = Task.FromResult("value");
 
         Task AddToResults(string value)
         {
@@ -145,8 +143,10 @@ public partial class AsyncOptionTests
             return Task.CompletedTask;
         }
 
-        await valueTask.Some().OnNoneAsync(() => AddToResults("OnNoneAsync 1 invokes onNone"));
-        await None<string>().OnNoneAsync(() => AddToResults("OnNoneAsync 2 invokes onNone"));
+        await "value".AsTask().Some()
+            .OnNoneAsync(() => AddToResults("OnNoneAsync 1 invokes onNone"));
+        await None<string>()
+            .OnNoneAsync(() => AddToResults("OnNoneAsync 2 invokes onNone"));
 
         onNoneResults.SequenceEqual(["OnNoneAsync 2 invokes onNone"]).ItIs(true);
     }

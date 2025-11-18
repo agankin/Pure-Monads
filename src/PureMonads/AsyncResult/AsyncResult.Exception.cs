@@ -51,7 +51,7 @@ public readonly struct AsyncResult<TValue> : IEquatable<AsyncResult<TValue>>
     {
         return HasValue
             ? _task.Map(Result<TValue>.Value).GetAwaiter()
-            : Task.FromResult(Result.Error<TValue>(_error)).GetAwaiter();
+            : Result.Error<TValue>(_error).AsTask().GetAwaiter();
     }
 
     /// <summary>
@@ -61,8 +61,10 @@ public readonly struct AsyncResult<TValue> : IEquatable<AsyncResult<TValue>>
     /// <param name="mapValue">A delegate invoked on Value.</param>
     /// <param name="mapError">A delegate invoked on Error.</param>
     /// <returns>A result returned from the matched delegate invocation.</returns>
-    public TResult Match<TResult>(Func<Task<TValue>, TResult> mapValue, Func<Exception, TResult> mapError) =>
-        HasValue ? mapValue(_task) : mapError(_error);
+    public TResult Match<TResult>(Func<Task<TValue>, TResult> mapValue, Func<Exception, TResult> mapError)
+    {
+        return HasValue ? mapValue(_task) : mapError(_error);
+    }
 
     /// <inheritdoc/>
     public override string ToString() => Match(value => $"AsyncValue", error => $"Error({error})");

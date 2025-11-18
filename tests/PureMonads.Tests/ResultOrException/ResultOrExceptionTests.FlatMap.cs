@@ -25,7 +25,7 @@ public partial class ResultOrExceptionTests
     [Test(Description = "Tests FlatMap (to AsyncResult)")]
     public async Task TestsFlatMapToAsyncResult()
     {
-        AsyncResult<int> AsyncValue(int value) => AsyncResult<int>.Value(Task.FromResult(value));
+        AsyncResult<int> AsyncValue(int value) => AsyncResult<int>.Value(value.AsTask());
         AsyncResult<int> AsyncError(Exception error) => AsyncResult<int>.Error(error);
 
         await Value(1)
@@ -42,8 +42,8 @@ public partial class ResultOrExceptionTests
     [Test(Description = "Tests FlatMapAsync")]
     public async Task TestsFlatMapAsync()
     {
-        Task<Result<int>> AsyncValue(int value) => Task.FromResult(Result<int>.Value(value));
-        Task<Result<int>> AsyncError(Exception error) => Task.FromResult(Result<int>.Error(error));
+        Task<Result<int>> AsyncValue(int value) => Result<int>.Value(value).AsTask();
+        Task<Result<int>> AsyncError(Exception error) => Result<int>.Error(error).AsTask();
 
         (
             await Value(1)

@@ -10,7 +10,7 @@ public partial class AsyncResultOrExceptionTests
     [Test(Description = "Tests to Option")]
     public async Task TestsToOption()
     {
-        AsyncResult<int> AsyncValue(int val) => Value(Task.FromResult(val));
+        AsyncResult<int> AsyncValue(int val) => Value(val.AsTask());
 
         (await AsyncValue(1).AsyncValue())
             .IsSome(1);
